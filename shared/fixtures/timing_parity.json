@@ -1,0 +1,2946 @@
+{
+ "cases": [
+  {
+   "bpm": 135.0,
+   "fps": 30,
+   "slot": {
+    "slot_id": "s0",
+    "start_beat": 0,
+    "duration_beats": 4,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 0.75
+    }
+   },
+   "cell": {
+    "region": "row1",
+    "clip_id": "c",
+    "start": 0,
+    "end": null,
+    "slip_frames": 0,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 1.813,
+    "anchor_sec": 3.715,
+    "out_sec": 5.387
+   },
+   "start_frame": 0,
+   "end_frame": 53,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     3.715
+    ],
+    [
+     1,
+     3.7399999999999998
+    ],
+    [
+     17,
+     4.14
+    ],
+    [
+     26,
+     4.365
+    ],
+    [
+     52,
+     5.015
+    ],
+    [
+     53,
+     5.04
+    ]
+   ]
+  },
+  {
+   "bpm": 128.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s1",
+    "start_beat": 0,
+    "duration_beats": 3,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 0.75
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0.5,
+    "end": null,
+    "slip_frames": 0,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "RANGE",
+    "in_sec": 9.271,
+    "anchor_sec": null,
+    "out_sec": 11.239
+   },
+   "start_frame": 14,
+   "end_frame": 84,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     9.271
+    ],
+    [
+     1,
+     9.2835
+    ],
+    [
+     23,
+     9.5585
+    ],
+    [
+     35,
+     9.7085
+    ],
+    [
+     69,
+     10.133500000000002
+    ],
+    [
+     70,
+     10.146
+    ]
+   ]
+  },
+  {
+   "bpm": 128.0,
+   "fps": 30,
+   "slot": {
+    "slot_id": "s2",
+    "start_beat": 4,
+    "duration_beats": 2,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": false,
+     "speed": 1.5
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0,
+    "end": null,
+    "slip_frames": 2,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "RANGE",
+    "in_sec": 6.049,
+    "anchor_sec": null,
+    "out_sec": 8.547
+   },
+   "start_frame": 56,
+   "end_frame": 84,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     6.115666666666667
+    ],
+    [
+     1,
+     6.165666666666667
+    ],
+    [
+     9,
+     6.565666666666667
+    ],
+    [
+     14,
+     6.815666666666667
+    ],
+    [
+     27,
+     7.465666666666667
+    ],
+    [
+     28,
+     7.515666666666666
+    ]
+   ]
+  },
+  {
+   "bpm": 174.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s3",
+    "start_beat": 4,
+    "duration_beats": 0.25,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 0.75
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0.25,
+    "end": null,
+    "slip_frames": 0,
+    "anchor_lock": "MIDPOINT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "RANGE",
+    "in_sec": 7.547,
+    "anchor_sec": null,
+    "out_sec": 9.238
+   },
+   "start_frame": 88,
+   "end_frame": 89,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     7.547
+    ],
+    [
+     1,
+     7.5595
+    ]
+   ]
+  },
+  {
+   "bpm": 135.0,
+   "fps": 30,
+   "slot": {
+    "slot_id": "s4",
+    "start_beat": 4,
+    "duration_beats": 1,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": false,
+     "speed": 0.75
+    }
+   },
+   "cell": {
+    "region": "m3",
+    "clip_id": "c",
+    "start": 0,
+    "end": 1.0,
+    "slip_frames": -4,
+    "anchor_lock": "MIDPOINT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 5.536,
+    "anchor_sec": 7.207,
+    "out_sec": 7.808
+   },
+   "start_frame": 53,
+   "end_frame": 67,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     6.898666666666666
+    ],
+    [
+     1,
+     6.923666666666666
+    ],
+    [
+     4,
+     6.998666666666666
+    ],
+    [
+     7,
+     7.073666666666666
+    ],
+    [
+     13,
+     7.2236666666666665
+    ],
+    [
+     14,
+     7.248666666666666
+    ]
+   ]
+  },
+  {
+   "bpm": 135.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s5",
+    "start_beat": 16.25,
+    "duration_beats": 8,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": false,
+     "speed": 0.75
+    }
+   },
+   "cell": {
+    "region": "m3",
+    "clip_id": "c",
+    "start": 0.5,
+    "end": null,
+    "slip_frames": 2,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "RANGE",
+    "in_sec": 16.329,
+    "anchor_sec": null,
+    "out_sec": 19.069
+   },
+   "start_frame": 447,
+   "end_frame": 647,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     16.362333333333336
+    ],
+    [
+     1,
+     16.374833333333335
+    ],
+    [
+     66,
+     17.187333333333335
+    ],
+    [
+     100,
+     17.612333333333336
+    ],
+    [
+     199,
+     18.849833333333336
+    ],
+    [
+     200,
+     18.862333333333336
+    ]
+   ]
+  },
+  {
+   "bpm": 120.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s6",
+    "start_beat": 16.25,
+    "duration_beats": 2,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": false,
+     "speed": 1.5
+    }
+   },
+   "cell": {
+    "region": "row1",
+    "clip_id": "c",
+    "start": 0,
+    "end": null,
+    "slip_frames": 0,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 15.381,
+    "anchor_sec": 17.277,
+    "out_sec": 17.752
+   },
+   "start_frame": 488,
+   "end_frame": 548,
+   "scale": 0.31666666666666526,
+   "samples": [
+    [
+     0,
+     17.277
+    ],
+    [
+     1,
+     17.284916666666668
+    ],
+    [
+     20,
+     17.435333333333332
+    ],
+    [
+     30,
+     17.514499999999998
+    ],
+    [
+     59,
+     17.744083333333332
+    ],
+    [
+     60,
+     17.752
+    ]
+   ]
+  },
+  {
+   "bpm": 140.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s7",
+    "start_beat": 16.25,
+    "duration_beats": 4,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 1.0
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0,
+    "end": null,
+    "slip_frames": 0,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 16.959,
+    "anchor_sec": 18.931,
+    "out_sec": 19.781
+   },
+   "start_frame": 418,
+   "end_frame": 521,
+   "scale": 0.4458392705719844,
+   "samples": [
+    [
+     0,
+     18.931
+    ],
+    [
+     1,
+     18.947347439920975
+    ],
+    [
+     34,
+     19.244610773574845
+    ],
+    [
+     51,
+     19.333035562238287
+    ],
+    [
+     102,
+     19.762423363726167
+    ],
+    [
+     103,
+     19.781
+    ]
+   ]
+  },
+  {
+   "bpm": 140.0,
+   "fps": 30,
+   "slot": {
+    "slot_id": "s8",
+    "start_beat": 7.5,
+    "duration_beats": 8,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 1.0
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0,
+    "end": null,
+    "slip_frames": 0,
+    "anchor_lock": "MIDPOINT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "RANGE",
+    "in_sec": 19.968,
+    "anchor_sec": null,
+    "out_sec": 21.871
+   },
+   "start_frame": 96,
+   "end_frame": 199,
+   "scale": 0.5542718446601939,
+   "samples": [
+    [
+     0,
+     19.968
+    ],
+    [
+     1,
+     19.98647572815534
+    ],
+    [
+     34,
+     20.596174757281553
+    ],
+    [
+     51,
+     20.91026213592233
+    ],
+    [
+     102,
+     21.852524271844658
+    ],
+    [
+     103,
+     21.871
+    ]
+   ]
+  },
+  {
+   "bpm": 140.0,
+   "fps": 30,
+   "slot": {
+    "slot_id": "s9",
+    "start_beat": 16.25,
+    "duration_beats": 0.5,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": false,
+     "speed": 0.75
+    }
+   },
+   "cell": {
+    "region": "row1",
+    "clip_id": "c",
+    "start": 0,
+    "end": null,
+    "slip_frames": 0,
+    "anchor_lock": "MIDPOINT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 18.621,
+    "anchor_sec": 19.27,
+    "out_sec": 21.082
+   },
+   "start_frame": 209,
+   "end_frame": 215,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     19.195
+    ],
+    [
+     1,
+     19.22
+    ],
+    [
+     2,
+     19.245
+    ],
+    [
+     3,
+     19.27
+    ],
+    [
+     5,
+     19.32
+    ],
+    [
+     6,
+     19.345
+    ]
+   ]
+  },
+  {
+   "bpm": 140.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s10",
+    "start_beat": 4,
+    "duration_beats": 8,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 1.5
+    }
+   },
+   "cell": {
+    "region": "row1",
+    "clip_id": "c",
+    "start": 0,
+    "end": null,
+    "slip_frames": 0,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 2.775,
+    "anchor_sec": 3.157,
+    "out_sec": 3.738
+   },
+   "start_frame": 103,
+   "end_frame": 309,
+   "scale": 0.25,
+   "samples": [
+    [
+     0,
+     3.157
+    ],
+    [
+     1,
+     3.16325
+    ],
+    [
+     68,
+     3.582
+    ],
+    [
+     103,
+     3.738
+    ],
+    [
+     205,
+     3.738
+    ],
+    [
+     206,
+     3.738
+    ]
+   ]
+  },
+  {
+   "bpm": 120.0,
+   "fps": 30,
+   "slot": {
+    "slot_id": "s11",
+    "start_beat": 16.25,
+    "duration_beats": 8,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": false,
+     "speed": 1.0
+    }
+   },
+   "cell": {
+    "region": "row1",
+    "clip_id": "c",
+    "start": 0.5,
+    "end": null,
+    "slip_frames": 0,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 8.655,
+    "anchor_sec": 10.207,
+    "out_sec": 10.859
+   },
+   "start_frame": 251,
+   "end_frame": 364,
+   "scale": 0.25,
+   "samples": [
+    [
+     0,
+     10.207
+    ],
+    [
+     1,
+     10.215333333333334
+    ],
+    [
+     37,
+     10.515333333333334
+    ],
+    [
+     56,
+     10.673666666666668
+    ],
+    [
+     112,
+     10.859
+    ],
+    [
+     113,
+     10.859
+    ]
+   ]
+  },
+  {
+   "bpm": 128.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s12",
+    "start_beat": 16.25,
+    "duration_beats": 1,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 1.5
+    }
+   },
+   "cell": {
+    "region": "m3",
+    "clip_id": "c",
+    "start": 0,
+    "end": null,
+    "slip_frames": -4,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 8.001,
+    "anchor_sec": 9.261,
+    "out_sec": 10.455
+   },
+   "start_frame": 457,
+   "end_frame": 485,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     9.194333333333333
+    ],
+    [
+     1,
+     9.219333333333333
+    ],
+    [
+     9,
+     9.419333333333332
+    ],
+    [
+     14,
+     9.544333333333332
+    ],
+    [
+     27,
+     9.869333333333334
+    ],
+    [
+     28,
+     9.894333333333332
+    ]
+   ]
+  },
+  {
+   "bpm": 135.0,
+   "fps": 30,
+   "slot": {
+    "slot_id": "s13",
+    "start_beat": 16.25,
+    "duration_beats": 8,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 1.0
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0.5,
+    "end": 1.0,
+    "slip_frames": -4,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 6.158,
+    "anchor_sec": 6.583,
+    "out_sec": 7.554
+   },
+   "start_frame": 223,
+   "end_frame": 230,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     6.449666666666666
+    ],
+    [
+     1,
+     6.483
+    ],
+    [
+     2,
+     6.516333333333333
+    ],
+    [
+     3,
+     6.549666666666666
+    ],
+    [
+     6,
+     6.649666666666667
+    ],
+    [
+     7,
+     6.683
+    ]
+   ]
+  },
+  {
+   "bpm": 128.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s14",
+    "start_beat": 16.25,
+    "duration_beats": 8,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 1.5
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0.5,
+    "end": 1.0,
+    "slip_frames": 0,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "RANGE",
+    "in_sec": 12.01,
+    "anchor_sec": null,
+    "out_sec": 13.842
+   },
+   "start_frame": 471,
+   "end_frame": 485,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     12.01
+    ],
+    [
+     1,
+     12.035
+    ],
+    [
+     4,
+     12.11
+    ],
+    [
+     7,
+     12.185
+    ],
+    [
+     13,
+     12.334999999999999
+    ],
+    [
+     14,
+     12.36
+    ]
+   ]
+  },
+  {
+   "bpm": 128.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s15",
+    "start_beat": 7.5,
+    "duration_beats": 1,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": false,
+     "speed": 1.0
+    }
+   },
+   "cell": {
+    "region": "row1",
+    "clip_id": "c",
+    "start": 0.25,
+    "end": 1.0,
+    "slip_frames": 2,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 18.322,
+    "anchor_sec": 20.132,
+    "out_sec": 21.954
+   },
+   "start_frame": 218,
+   "end_frame": 239,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     20.165333333333336
+    ],
+    [
+     1,
+     20.182000000000002
+    ],
+    [
+     7,
+     20.282000000000004
+    ],
+    [
+     10,
+     20.332000000000004
+    ],
+    [
+     20,
+     20.49866666666667
+    ],
+    [
+     21,
+     20.515333333333338
+    ]
+   ]
+  },
+  {
+   "bpm": 140.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s16",
+    "start_beat": 7.5,
+    "duration_beats": 1,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 0.75
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0,
+    "end": null,
+    "slip_frames": 2,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 10.681,
+    "anchor_sec": 12.005,
+    "out_sec": 12.882
+   },
+   "start_frame": 193,
+   "end_frame": 219,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     12.038333333333334
+    ],
+    [
+     1,
+     12.075000000000001
+    ],
+    [
+     8,
+     12.265166666666667
+    ],
+    [
+     13,
+     12.323500000000001
+    ],
+    [
+     25,
+     12.623700000000001
+    ],
+    [
+     26,
+     12.665366666666667
+    ]
+   ]
+  },
+  {
+   "bpm": 90.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s17",
+    "start_beat": 4,
+    "duration_beats": 1,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 1.0
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0.25,
+    "end": null,
+    "slip_frames": -4,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 13.293,
+    "anchor_sec": 13.668,
+    "out_sec": 14.323
+   },
+   "start_frame": 170,
+   "end_frame": 200,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     13.601333333333333
+    ],
+    [
+     1,
+     13.638
+    ],
+    [
+     10,
+     13.8605
+    ],
+    [
+     15,
+     13.918833333333334
+    ],
+    [
+     29,
+     14.253166666666667
+    ],
+    [
+     30,
+     14.294833333333333
+    ]
+   ]
+  },
+  {
+   "bpm": 128.0,
+   "fps": 30,
+   "slot": {
+    "slot_id": "s18",
+    "start_beat": 4,
+    "duration_beats": 0.5,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 1.5
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0,
+    "end": null,
+    "slip_frames": 0,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "RANGE",
+    "in_sec": 18.21,
+    "anchor_sec": null,
+    "out_sec": 19.836
+   },
+   "start_frame": 56,
+   "end_frame": 63,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     18.21
+    ],
+    [
+     1,
+     18.26
+    ],
+    [
+     2,
+     18.310000000000002
+    ],
+    [
+     3,
+     18.36
+    ],
+    [
+     6,
+     18.51
+    ],
+    [
+     7,
+     18.560000000000002
+    ]
+   ]
+  },
+  {
+   "bpm": 140.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s19",
+    "start_beat": 16.25,
+    "duration_beats": 0.25,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 1.0
+    }
+   },
+   "cell": {
+    "region": "m3",
+    "clip_id": "c",
+    "start": 0,
+    "end": 1.0,
+    "slip_frames": 0,
+    "anchor_lock": "MIDPOINT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 2.578,
+    "anchor_sec": 4.578,
+    "out_sec": 5.84
+   },
+   "start_frame": 418,
+   "end_frame": 424,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     4.5280000000000005
+    ],
+    [
+     1,
+     4.544666666666667
+    ],
+    [
+     2,
+     4.561333333333334
+    ],
+    [
+     3,
+     4.578
+    ],
+    [
+     5,
+     4.6113333333333335
+    ],
+    [
+     6,
+     4.628
+    ]
+   ]
+  },
+  {
+   "bpm": 120.0,
+   "fps": 30,
+   "slot": {
+    "slot_id": "s20",
+    "start_beat": 16.25,
+    "duration_beats": 0.25,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 0.75
+    }
+   },
+   "cell": {
+    "region": "row1",
+    "clip_id": "c",
+    "start": 0.5,
+    "end": null,
+    "slip_frames": 0,
+    "anchor_lock": "MIDPOINT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 18.796,
+    "anchor_sec": 19.982,
+    "out_sec": 21.59
+   },
+   "start_frame": 251,
+   "end_frame": 252,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     19.9695
+    ],
+    [
+     1,
+     19.9945
+    ]
+   ]
+  },
+  {
+   "bpm": 174.0,
+   "fps": 30,
+   "slot": {
+    "slot_id": "s21",
+    "start_beat": 7.5,
+    "duration_beats": 2,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 1.5
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0,
+    "end": null,
+    "slip_frames": 0,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "RANGE",
+    "in_sec": 19.685,
+    "anchor_sec": null,
+    "out_sec": 21.59
+   },
+   "start_frame": 78,
+   "end_frame": 98,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     19.685
+    ],
+    [
+     1,
+     19.735
+    ],
+    [
+     6,
+     19.985
+    ],
+    [
+     10,
+     20.185
+    ],
+    [
+     19,
+     20.634999999999998
+    ],
+    [
+     20,
+     20.685
+    ]
+   ]
+  },
+  {
+   "bpm": 174.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s22",
+    "start_beat": 7.5,
+    "duration_beats": 3,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": false,
+     "speed": 1.0
+    }
+   },
+   "cell": {
+    "region": "m3",
+    "clip_id": "c",
+    "start": 0.5,
+    "end": null,
+    "slip_frames": 0,
+    "anchor_lock": "MIDPOINT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "RANGE",
+    "in_sec": 14.864,
+    "anchor_sec": null,
+    "out_sec": 18.079
+   },
+   "start_frame": 166,
+   "end_frame": 217,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     14.864
+    ],
+    [
+     1,
+     14.880666666666668
+    ],
+    [
+     17,
+     15.147333333333334
+    ],
+    [
+     25,
+     15.280666666666667
+    ],
+    [
+     50,
+     15.697333333333335
+    ],
+    [
+     51,
+     15.714
+    ]
+   ]
+  },
+  {
+   "bpm": 90.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s23",
+    "start_beat": 4,
+    "duration_beats": 3,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 1.0
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0.25,
+    "end": null,
+    "slip_frames": 2,
+    "anchor_lock": "MIDPOINT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "RANGE",
+    "in_sec": 19.707,
+    "anchor_sec": null,
+    "out_sec": 21.532
+   },
+   "start_frame": 170,
+   "end_frame": 280,
+   "scale": 0.9772727272727261,
+   "samples": [
+    [
+     0,
+     19.740333333333336
+    ],
+    [
+     1,
+     19.756621212121214
+    ],
+    [
+     36,
+     20.32669696969697
+    ],
+    [
+     55,
+     20.636166666666668
+    ],
+    [
+     109,
+     21.515712121212122
+    ],
+    [
+     110,
+     21.532
+    ]
+   ]
+  },
+  {
+   "bpm": 174.0,
+   "fps": 30,
+   "slot": {
+    "slot_id": "s24",
+    "start_beat": 16.25,
+    "duration_beats": 0.5,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 1.0
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0.25,
+    "end": 1.0,
+    "slip_frames": -4,
+    "anchor_lock": "MIDPOINT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 19.835,
+    "anchor_sec": 20.423,
+    "out_sec": 20.728
+   },
+   "start_frame": 171,
+   "end_frame": 173,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     20.25633333333333
+    ],
+    [
+     1,
+     20.289666666666665
+    ],
+    [
+     2,
+     20.323
+    ]
+   ]
+  },
+  {
+   "bpm": 140.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s25",
+    "start_beat": 7.5,
+    "duration_beats": 3,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 1.5
+    }
+   },
+   "cell": {
+    "region": "m3",
+    "clip_id": "c",
+    "start": 0,
+    "end": null,
+    "slip_frames": -4,
+    "anchor_lock": "MIDPOINT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 10.287,
+    "anchor_sec": 11.818,
+    "out_sec": 13.484
+   },
+   "start_frame": 193,
+   "end_frame": 270,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     10.788833333333333
+    ],
+    [
+     1,
+     10.813833333333333
+    ],
+    [
+     25,
+     11.413833333333333
+    ],
+    [
+     38,
+     11.738833333333334
+    ],
+    [
+     76,
+     12.688833333333333
+    ],
+    [
+     77,
+     12.713833333333334
+    ]
+   ]
+  },
+  {
+   "bpm": 90.0,
+   "fps": 30,
+   "slot": {
+    "slot_id": "s26",
+    "start_beat": 7.5,
+    "duration_beats": 4,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 1.0
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0.5,
+    "end": 1.0,
+    "slip_frames": -4,
+    "anchor_lock": "MIDPOINT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 4.779,
+    "anchor_sec": 6.266,
+    "out_sec": 7.136
+   },
+   "start_frame": 160,
+   "end_frame": 170,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     5.965999999999999
+    ],
+    [
+     1,
+     5.9993333333333325
+    ],
+    [
+     3,
+     6.066
+    ],
+    [
+     5,
+     6.132666666666666
+    ],
+    [
+     9,
+     6.266
+    ],
+    [
+     10,
+     6.299333333333333
+    ]
+   ]
+  },
+  {
+   "bpm": 135.0,
+   "fps": 30,
+   "slot": {
+    "slot_id": "s27",
+    "start_beat": 4,
+    "duration_beats": 3,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": false,
+     "speed": 0.75
+    }
+   },
+   "cell": {
+    "region": "m3",
+    "clip_id": "c",
+    "start": 0.25,
+    "end": 1.0,
+    "slip_frames": 0,
+    "anchor_lock": "MIDPOINT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "RANGE",
+    "in_sec": 16.249,
+    "anchor_sec": null,
+    "out_sec": 17.765
+   },
+   "start_frame": 57,
+   "end_frame": 67,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     16.249
+    ],
+    [
+     1,
+     16.273999999999997
+    ],
+    [
+     3,
+     16.323999999999998
+    ],
+    [
+     5,
+     16.374
+    ],
+    [
+     9,
+     16.474
+    ],
+    [
+     10,
+     16.499
+    ]
+   ]
+  },
+  {
+   "bpm": 90.0,
+   "fps": 30,
+   "slot": {
+    "slot_id": "s28",
+    "start_beat": 7.5,
+    "duration_beats": 2,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 1.0
+    }
+   },
+   "cell": {
+    "region": "m3",
+    "clip_id": "c",
+    "start": 0,
+    "end": null,
+    "slip_frames": -4,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "RANGE",
+    "in_sec": 6.321,
+    "anchor_sec": null,
+    "out_sec": 7.186
+   },
+   "start_frame": 150,
+   "end_frame": 190,
+   "scale": 0.7487500000000005,
+   "samples": [
+    [
+     0,
+     6.321
+    ],
+    [
+     1,
+     6.321
+    ],
+    [
+     13,
+     6.512124999999999
+    ],
+    [
+     20,
+     6.6868333333333325
+    ],
+    [
+     39,
+     7.161041666666667
+    ],
+    [
+     40,
+     7.186
+    ]
+   ]
+  },
+  {
+   "bpm": 128.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s29",
+    "start_beat": 4,
+    "duration_beats": 3,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 1.0
+    }
+   },
+   "cell": {
+    "region": "m3",
+    "clip_id": "c",
+    "start": 0.25,
+    "end": 1.0,
+    "slip_frames": 2,
+    "anchor_lock": "MIDPOINT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "RANGE",
+    "in_sec": 6.332,
+    "anchor_sec": null,
+    "out_sec": 8.811
+   },
+   "start_frame": 120,
+   "end_frame": 141,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     6.365333333333333
+    ],
+    [
+     1,
+     6.382
+    ],
+    [
+     7,
+     6.481999999999999
+    ],
+    [
+     10,
+     6.532
+    ],
+    [
+     20,
+     6.698666666666666
+    ],
+    [
+     21,
+     6.715333333333333
+    ]
+   ]
+  },
+  {
+   "bpm": 135.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s30",
+    "start_beat": 4,
+    "duration_beats": 0.5,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": false,
+     "speed": 0.75
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0,
+    "end": 1.0,
+    "slip_frames": 2,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "RANGE",
+    "in_sec": 11.489,
+    "anchor_sec": null,
+    "out_sec": 14.041
+   },
+   "start_frame": 107,
+   "end_frame": 120,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     11.522333333333334
+    ],
+    [
+     1,
+     11.534833333333333
+    ],
+    [
+     4,
+     11.572333333333335
+    ],
+    [
+     6,
+     11.597333333333333
+    ],
+    [
+     12,
+     11.672333333333334
+    ],
+    [
+     13,
+     11.684833333333334
+    ]
+   ]
+  },
+  {
+   "bpm": 135.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s31",
+    "start_beat": 0,
+    "duration_beats": 0.25,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": false,
+     "speed": 1.5
+    }
+   },
+   "cell": {
+    "region": "m3",
+    "clip_id": "c",
+    "start": 0.5,
+    "end": null,
+    "slip_frames": 0,
+    "anchor_lock": "MIDPOINT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 10.998,
+    "anchor_sec": 12.624,
+    "out_sec": 14.145
+   },
+   "start_frame": 13,
+   "end_frame": 14,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     12.611500000000001
+    ],
+    [
+     1,
+     12.6365
+    ]
+   ]
+  },
+  {
+   "bpm": 140.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s32",
+    "start_beat": 7.5,
+    "duration_beats": 8,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": false,
+     "speed": 1.5
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0,
+    "end": null,
+    "slip_frames": -4,
+    "anchor_lock": "MIDPOINT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "RANGE",
+    "in_sec": 10.367,
+    "anchor_sec": null,
+    "out_sec": 13.497
+   },
+   "start_frame": 193,
+   "end_frame": 399,
+   "scale": 0.6207119741100321,
+   "samples": [
+    [
+     0,
+     10.367
+    ],
+    [
+     1,
+     10.367
+    ],
+    [
+     68,
+     11.355543689320388
+    ],
+    [
+     103,
+     11.898666666666667
+    ],
+    [
+     205,
+     13.48148220064725
+    ],
+    [
+     206,
+     13.497
+    ]
+   ]
+  },
+  {
+   "bpm": 120.0,
+   "fps": 30,
+   "slot": {
+    "slot_id": "s33",
+    "start_beat": 4,
+    "duration_beats": 1,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": false,
+     "speed": 1.0
+    }
+   },
+   "cell": {
+    "region": "m3",
+    "clip_id": "c",
+    "start": 0.25,
+    "end": null,
+    "slip_frames": 0,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 1.876,
+    "anchor_sec": 3.095,
+    "out_sec": 3.966
+   },
+   "start_frame": 64,
+   "end_frame": 75,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     3.095
+    ],
+    [
+     1,
+     3.1283333333333334
+    ],
+    [
+     3,
+     3.1950000000000003
+    ],
+    [
+     5,
+     3.2616666666666667
+    ],
+    [
+     10,
+     3.4283333333333337
+    ],
+    [
+     11,
+     3.461666666666667
+    ]
+   ]
+  },
+  {
+   "bpm": 135.0,
+   "fps": 30,
+   "slot": {
+    "slot_id": "s34",
+    "start_beat": 7.5,
+    "duration_beats": 0.5,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": false,
+     "speed": 0.75
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0,
+    "end": null,
+    "slip_frames": 2,
+    "anchor_lock": "MIDPOINT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 4.995,
+    "anchor_sec": 5.409,
+    "out_sec": 7.112
+   },
+   "start_frame": 100,
+   "end_frame": 107,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     5.388166666666666
+    ],
+    [
+     1,
+     5.413166666666666
+    ],
+    [
+     2,
+     5.438166666666667
+    ],
+    [
+     3,
+     5.463166666666666
+    ],
+    [
+     6,
+     5.538166666666666
+    ],
+    [
+     7,
+     5.563166666666667
+    ]
+   ]
+  },
+  {
+   "bpm": 174.0,
+   "fps": 30,
+   "slot": {
+    "slot_id": "s35",
+    "start_beat": 0,
+    "duration_beats": 0.25,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": false,
+     "speed": 1.0
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0,
+    "end": null,
+    "slip_frames": -4,
+    "anchor_lock": "MIDPOINT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "RANGE",
+    "in_sec": 19.092,
+    "anchor_sec": null,
+    "out_sec": 22.282
+   },
+   "start_frame": 0,
+   "end_frame": 3,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     19.092
+    ],
+    [
+     1,
+     19.092
+    ],
+    [
+     2,
+     19.092
+    ],
+    [
+     3,
+     19.092
+    ]
+   ]
+  },
+  {
+   "bpm": 135.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s36",
+    "start_beat": 16.25,
+    "duration_beats": 1,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 0.75
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0.25,
+    "end": 1.0,
+    "slip_frames": 0,
+    "anchor_lock": "MIDPOINT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "RANGE",
+    "in_sec": 11.658,
+    "anchor_sec": null,
+    "out_sec": 13.68
+   },
+   "start_frame": 440,
+   "end_frame": 460,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     11.658
+    ],
+    [
+     1,
+     11.670499999999999
+    ],
+    [
+     6,
+     11.732999999999999
+    ],
+    [
+     10,
+     11.783
+    ],
+    [
+     19,
+     11.8955
+    ],
+    [
+     20,
+     11.908
+    ]
+   ]
+  },
+  {
+   "bpm": 140.0,
+   "fps": 30,
+   "slot": {
+    "slot_id": "s37",
+    "start_beat": 16.25,
+    "duration_beats": 0.5,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": false,
+     "speed": 1.5
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0.25,
+    "end": null,
+    "slip_frames": 0,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 8.383,
+    "anchor_sec": 8.755,
+    "out_sec": 9.721
+   },
+   "start_frame": 212,
+   "end_frame": 215,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     8.755
+    ],
+    [
+     1,
+     8.805000000000001
+    ],
+    [
+     2,
+     8.855
+    ],
+    [
+     3,
+     8.905000000000001
+    ]
+   ]
+  },
+  {
+   "bpm": 140.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s38",
+    "start_beat": 0,
+    "duration_beats": 8,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 1.5
+    }
+   },
+   "cell": {
+    "region": "full",
+    "clip_id": "c",
+    "start": 0,
+    "end": null,
+    "slip_frames": -4,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 2.54,
+    "anchor_sec": 3.987,
+    "out_sec": 4.336
+   },
+   "start_frame": 0,
+   "end_frame": 206,
+   "scale": 0.25,
+   "samples": [
+    [
+     0,
+     3.9203333333333332
+    ],
+    [
+     1,
+     3.9295
+    ],
+    [
+     68,
+     4.253291666666667
+    ],
+    [
+     103,
+     4.336
+    ],
+    [
+     205,
+     4.336
+    ],
+    [
+     206,
+     4.336
+    ]
+   ]
+  },
+  {
+   "bpm": 174.0,
+   "fps": 60,
+   "slot": {
+    "slot_id": "s39",
+    "start_beat": 7.5,
+    "duration_beats": 0.5,
+    "zone_type": "HYBRID_DROP",
+    "fx": {
+     "speed_ramp": true,
+     "speed": 0.75
+    }
+   },
+   "cell": {
+    "region": "row1",
+    "clip_id": "c",
+    "start": 0,
+    "end": null,
+    "slip_frames": 2,
+    "anchor_lock": "DOWNBEAT"
+   },
+   "clip": {
+    "clip_id": "c",
+    "source_path": "x",
+    "mode": "ANCHOR",
+    "in_sec": 4.614,
+    "anchor_sec": 5.973,
+    "out_sec": 7.252
+   },
+   "start_frame": 155,
+   "end_frame": 166,
+   "scale": 1.0,
+   "samples": [
+    [
+     0,
+     6.006333333333333
+    ],
+    [
+     1,
+     6.018833333333333
+    ],
+    [
+     3,
+     6.043833333333333
+    ],
+    [
+     5,
+     6.068833333333333
+    ],
+    [
+     10,
+     6.131333333333333
+    ],
+    [
+     11,
+     6.143833333333333
+    ]
+   ]
+  }
+ ],
+ "regions": {
+  "FULLSCREEN_VELOCITY|{}|1080x1920": {
+   "full": [
+    0,
+    0,
+    1080,
+    1920
+   ]
+  },
+  "FULLSCREEN_VELOCITY|{}|720x1280": {
+   "full": [
+    0,
+    0,
+    720,
+    1280
+   ]
+  },
+  "FULLSCREEN_VELOCITY|{}|1000x1778": {
+   "full": [
+    0,
+    0,
+    1000,
+    1778
+   ]
+  },
+  "STACK_3_ROW|{}|1080x1920": {
+   "row0": [
+    0,
+    0,
+    1080,
+    640
+   ],
+   "row1": [
+    0,
+    640,
+    1080,
+    640
+   ],
+   "row2": [
+    0,
+    1280,
+    1080,
+    640
+   ]
+  },
+  "STACK_3_ROW|{}|720x1280": {
+   "row0": [
+    0,
+    0,
+    720,
+    426
+   ],
+   "row1": [
+    0,
+    426,
+    720,
+    428
+   ],
+   "row2": [
+    0,
+    854,
+    720,
+    426
+   ]
+  },
+  "STACK_3_ROW|{}|1000x1778": {
+   "row0": [
+    0,
+    0,
+    1000,
+    592
+   ],
+   "row1": [
+    0,
+    592,
+    1000,
+    594
+   ],
+   "row2": [
+    0,
+    1186,
+    1000,
+    592
+   ]
+  },
+  "CENTER_PIP_PUNCH|{\"pip_aspect\": \"4:3\", \"pip_background\": \"STACK\"}|1080x1920": {
+   "row0": [
+    0,
+    0,
+    1080,
+    640
+   ],
+   "row1": [
+    0,
+    640,
+    1080,
+    640
+   ],
+   "row2": [
+    0,
+    1280,
+    1080,
+    640
+   ],
+   "pip": [
+    216,
+    716,
+    648,
+    486
+   ]
+  },
+  "CENTER_PIP_PUNCH|{\"pip_aspect\": \"4:3\", \"pip_background\": \"STACK\"}|720x1280": {
+   "row0": [
+    0,
+    0,
+    720,
+    426
+   ],
+   "row1": [
+    0,
+    426,
+    720,
+    428
+   ],
+   "row2": [
+    0,
+    854,
+    720,
+    426
+   ],
+   "pip": [
+    144,
+    478,
+    432,
+    324
+   ]
+  },
+  "CENTER_PIP_PUNCH|{\"pip_aspect\": \"4:3\", \"pip_background\": \"STACK\"}|1000x1778": {
+   "row0": [
+    0,
+    0,
+    1000,
+    592
+   ],
+   "row1": [
+    0,
+    592,
+    1000,
+    594
+   ],
+   "row2": [
+    0,
+    1186,
+    1000,
+    592
+   ],
+   "pip": [
+    200,
+    664,
+    600,
+    450
+   ]
+  },
+  "CENTER_PIP_PUNCH|{\"pip_aspect\": \"1:1\"}|1080x1920": {
+   "full": [
+    0,
+    0,
+    1080,
+    1920
+   ],
+   "pip": [
+    216,
+    636,
+    648,
+    648
+   ]
+  },
+  "CENTER_PIP_PUNCH|{\"pip_aspect\": \"1:1\"}|720x1280": {
+   "full": [
+    0,
+    0,
+    720,
+    1280
+   ],
+   "pip": [
+    144,
+    424,
+    432,
+    432
+   ]
+  },
+  "CENTER_PIP_PUNCH|{\"pip_aspect\": \"1:1\"}|1000x1778": {
+   "full": [
+    0,
+    0,
+    1000,
+    1778
+   ],
+   "pip": [
+    200,
+    588,
+    600,
+    600
+   ]
+  },
+  "STROBE_MATRIX|{\"matrix\": \"3x4\"}|1080x1920": {
+   "m0": [
+    0,
+    0,
+    360,
+    480
+   ],
+   "m1": [
+    360,
+    0,
+    360,
+    480
+   ],
+   "m2": [
+    720,
+    0,
+    360,
+    480
+   ],
+   "m3": [
+    0,
+    480,
+    360,
+    480
+   ],
+   "m4": [
+    360,
+    480,
+    360,
+    480
+   ],
+   "m5": [
+    720,
+    480,
+    360,
+    480
+   ],
+   "m6": [
+    0,
+    960,
+    360,
+    480
+   ],
+   "m7": [
+    360,
+    960,
+    360,
+    480
+   ],
+   "m8": [
+    720,
+    960,
+    360,
+    480
+   ],
+   "m9": [
+    0,
+    1440,
+    360,
+    480
+   ],
+   "m10": [
+    360,
+    1440,
+    360,
+    480
+   ],
+   "m11": [
+    720,
+    1440,
+    360,
+    480
+   ]
+  },
+  "STROBE_MATRIX|{\"matrix\": \"3x4\"}|720x1280": {
+   "m0": [
+    0,
+    0,
+    240,
+    320
+   ],
+   "m1": [
+    240,
+    0,
+    240,
+    320
+   ],
+   "m2": [
+    480,
+    0,
+    240,
+    320
+   ],
+   "m3": [
+    0,
+    320,
+    240,
+    320
+   ],
+   "m4": [
+    240,
+    320,
+    240,
+    320
+   ],
+   "m5": [
+    480,
+    320,
+    240,
+    320
+   ],
+   "m6": [
+    0,
+    640,
+    240,
+    320
+   ],
+   "m7": [
+    240,
+    640,
+    240,
+    320
+   ],
+   "m8": [
+    480,
+    640,
+    240,
+    320
+   ],
+   "m9": [
+    0,
+    960,
+    240,
+    320
+   ],
+   "m10": [
+    240,
+    960,
+    240,
+    320
+   ],
+   "m11": [
+    480,
+    960,
+    240,
+    320
+   ]
+  },
+  "STROBE_MATRIX|{\"matrix\": \"3x4\"}|1000x1778": {
+   "m0": [
+    0,
+    0,
+    334,
+    444
+   ],
+   "m1": [
+    334,
+    0,
+    332,
+    444
+   ],
+   "m2": [
+    666,
+    0,
+    334,
+    444
+   ],
+   "m3": [
+    0,
+    444,
+    334,
+    446
+   ],
+   "m4": [
+    334,
+    444,
+    332,
+    446
+   ],
+   "m5": [
+    666,
+    444,
+    334,
+    446
+   ],
+   "m6": [
+    0,
+    890,
+    334,
+    444
+   ],
+   "m7": [
+    334,
+    890,
+    332,
+    444
+   ],
+   "m8": [
+    666,
+    890,
+    334,
+    444
+   ],
+   "m9": [
+    0,
+    1334,
+    334,
+    444
+   ],
+   "m10": [
+    334,
+    1334,
+    332,
+    444
+   ],
+   "m11": [
+    666,
+    1334,
+    334,
+    444
+   ]
+  },
+  "STROBE_MATRIX|{\"matrix\": \"2x5\"}|1080x1920": {
+   "m0": [
+    0,
+    0,
+    540,
+    384
+   ],
+   "m1": [
+    540,
+    0,
+    540,
+    384
+   ],
+   "m2": [
+    0,
+    384,
+    540,
+    384
+   ],
+   "m3": [
+    540,
+    384,
+    540,
+    384
+   ],
+   "m4": [
+    0,
+    768,
+    540,
+    384
+   ],
+   "m5": [
+    540,
+    768,
+    540,
+    384
+   ],
+   "m6": [
+    0,
+    1152,
+    540,
+    384
+   ],
+   "m7": [
+    540,
+    1152,
+    540,
+    384
+   ],
+   "m8": [
+    0,
+    1536,
+    540,
+    384
+   ],
+   "m9": [
+    540,
+    1536,
+    540,
+    384
+   ]
+  },
+  "STROBE_MATRIX|{\"matrix\": \"2x5\"}|720x1280": {
+   "m0": [
+    0,
+    0,
+    360,
+    256
+   ],
+   "m1": [
+    360,
+    0,
+    360,
+    256
+   ],
+   "m2": [
+    0,
+    256,
+    360,
+    256
+   ],
+   "m3": [
+    360,
+    256,
+    360,
+    256
+   ],
+   "m4": [
+    0,
+    512,
+    360,
+    256
+   ],
+   "m5": [
+    360,
+    512,
+    360,
+    256
+   ],
+   "m6": [
+    0,
+    768,
+    360,
+    256
+   ],
+   "m7": [
+    360,
+    768,
+    360,
+    256
+   ],
+   "m8": [
+    0,
+    1024,
+    360,
+    256
+   ],
+   "m9": [
+    360,
+    1024,
+    360,
+    256
+   ]
+  },
+  "STROBE_MATRIX|{\"matrix\": \"2x5\"}|1000x1778": {
+   "m0": [
+    0,
+    0,
+    500,
+    356
+   ],
+   "m1": [
+    500,
+    0,
+    500,
+    356
+   ],
+   "m2": [
+    0,
+    356,
+    500,
+    356
+   ],
+   "m3": [
+    500,
+    356,
+    500,
+    356
+   ],
+   "m4": [
+    0,
+    712,
+    500,
+    354
+   ],
+   "m5": [
+    500,
+    712,
+    500,
+    354
+   ],
+   "m6": [
+    0,
+    1066,
+    500,
+    356
+   ],
+   "m7": [
+    500,
+    1066,
+    500,
+    356
+   ],
+   "m8": [
+    0,
+    1422,
+    500,
+    356
+   ],
+   "m9": [
+    500,
+    1422,
+    500,
+    356
+   ]
+  }
+ },
+ "beat_frames": {
+  "0|120.0|30": 0,
+  "0|120.0|60": 0,
+  "0|135.0|30": 0,
+  "0|135.0|60": 0,
+  "0|174.0|30": 0,
+  "0|174.0|60": 0,
+  "0.25|120.0|30": 4,
+  "0.25|120.0|60": 8,
+  "0.25|135.0|30": 3,
+  "0.25|135.0|60": 7,
+  "0.25|174.0|30": 3,
+  "0.25|174.0|60": 5,
+  "1|120.0|30": 15,
+  "1|120.0|60": 30,
+  "1|135.0|30": 13,
+  "1|135.0|60": 27,
+  "1|174.0|30": 10,
+  "1|174.0|60": 21,
+  "3.75|120.0|30": 56,
+  "3.75|120.0|60": 113,
+  "3.75|135.0|30": 50,
+  "3.75|135.0|60": 100,
+  "3.75|174.0|30": 39,
+  "3.75|174.0|60": 78,
+  "16|120.0|30": 240,
+  "16|120.0|60": 480,
+  "16|135.0|30": 213,
+  "16|135.0|60": 427,
+  "16|174.0|30": 166,
+  "16|174.0|60": 331,
+  "47.5|120.0|30": 713,
+  "47.5|120.0|60": 1425,
+  "47.5|135.0|30": 633,
+  "47.5|135.0|60": 1267,
+  "47.5|174.0|30": 491,
+  "47.5|174.0|60": 983,
+  "100|120.0|30": 1500,
+  "100|120.0|60": 3000,
+  "100|135.0|30": 1333,
+  "100|135.0|60": 2667,
+  "100|174.0|30": 1034,
+  "100|174.0|60": 2069
+ }
+}

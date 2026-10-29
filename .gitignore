@@ -1,0 +1,16 @@
+CLAUDE.md
+
+# Python
+backend/.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Frontend
+node_modules/
+frontend/dist/
+*.tsbuildinfo
+
+# Generated media and local session data
+samples/
+workspace/
