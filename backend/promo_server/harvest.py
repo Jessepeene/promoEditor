@@ -8,6 +8,9 @@ analysing a long 4K file costs a fraction of a second. Each keyframe gets:
 Dark or flat frames and the first/last 10% of each file are ignored. The best
 moment per file is ranked by motion x contrast; energy tags follow motion rank.
 The calmest well-exposed picks become RANGE breather clips (tier 0).
+
+This scan is pass 1 of both versions: v1 (`select` here) picks straight from it,
+v2 (harvest_v2.py) refines the best candidates by decoding short windows.
 """
 
 from __future__ import annotations
@@ -18,7 +21,7 @@ import threading
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
+from typing import Callable, Optional
 
 import numpy as np
 
@@ -82,6 +85,12 @@ def analyse(path: str) -> list[Moment]:
     return out
 
 
+def motion_tag(rank: int, n: int) -> int:
+    """Energy tag by motion quartile: the top quarter of picks is 4 (peak), the bottom quarter 1."""
+    frac = rank / max(n, 1)
+    return 4 if frac < 0.25 else 3 if frac < 0.5 else 2 if frac < 0.75 else 1
+
+
 def select(moments_per_file: list[list[Moment]], count: int, breathers: int) -> list[dict]:
     """Pick `count` anchor clips spread across files plus `breathers` calm RANGE clips."""
     best = [max(ms, key=lambda m: m.score) for ms in moments_per_file if ms]
@@ -104,11 +113,9 @@ def select(moments_per_file: list[list[Moment]], count: int, breathers: int) -> 
     clips = []
     ranked = sorted(picks, key=lambda m: m.motion, reverse=True)
     for rank, m in enumerate(ranked):
-        frac = rank / max(len(ranked), 1)
-        tag = 4 if frac < 0.25 else 3 if frac < 0.5 else 2 if frac < 0.75 else 1  # motion quartiles
-        clips.append({"source_path": m.path, "mode": "ANCHOR", "energy_tag": tag, "anchor_sec": round(m.t, 4),
-                      "in_sec": round(max(0.0, m.t - ANCHOR_PAD), 4),
-                      "out_sec": round(min(m.duration, m.t + ANCHOR_PAD), 4)})
+        clips.append({"source_path": m.path, "mode": "ANCHOR", "energy_tag": motion_tag(rank, len(ranked)),
+                      "anchor_sec": round(m.t, 4), "in_sec": round(max(0.0, m.t - ANCHOR_PAD), 4),
+                      "out_sec": round(min(m.duration, m.t + ANCHOR_PAD), 4), "focus_xy": [0.5, 0.5], "quality": None})
 
     # Breathers: the smoothest bright, contrasty moment in files not already used.
     used_paths = {m.path for m in picks}
@@ -118,8 +125,12 @@ def select(moments_per_file: list[list[Moment]], count: int, breathers: int) -> 
     for m in calm[:breathers]:
         start = min(max(0.0, m.t - BREATHER_LEN / 2), m.duration - BREATHER_LEN)
         clips.append({"source_path": m.path, "mode": "RANGE", "energy_tag": 0, "anchor_sec": None,
-                      "in_sec": round(start, 4), "out_sec": round(start + BREATHER_LEN, 4)})
+                      "in_sec": round(start, 4), "out_sec": round(start + BREATHER_LEN, 4),
+                      "focus_xy": [0.5, 0.5], "quality": None})
     return clips
+
+
+Selector = Callable[[list[list[Moment]], Callable[[str, int, int], None]], list[dict]]
 
 
 class Harvester:
@@ -128,17 +139,22 @@ class Harvester:
         self._thread: Optional[threading.Thread] = None
         self.status: dict = {"state": "idle"}
 
-    def start(self, paths: list[str], count: int, breathers: int) -> dict:
+    def start(self, paths: list[str], selector: Selector) -> dict:
+        """Scan `paths` (pass 1), then let `selector` turn the scored keyframes into clips."""
         with self._lock:
             if self._thread and self._thread.is_alive():
                 raise RuntimeError("A harvest is already running.")
-            self.status = {"state": "running", "done": 0, "total": len(paths), "clips": None, "error": None,
-                           "skipped": 0}
-            self._thread = threading.Thread(target=self._run, args=(paths, count, breathers), daemon=True)
+            self.status = {"state": "running", "phase": "scanning", "done": 0, "total": len(paths), "clips": None,
+                           "error": None, "skipped": 0}
+            self._thread = threading.Thread(target=self._run, args=(paths, selector), daemon=True)
             self._thread.start()
             return self.status
 
-    def _run(self, paths: list[str], count: int, breathers: int) -> None:
+    def _progress(self, phase: str, done: int, total: int) -> None:
+        with self._lock:
+            self.status.update(phase=phase, done=done, total=total)
+
+    def _run(self, paths: list[str], selector: Selector) -> None:
         results: list[list[Moment]] = []
         try:
             with ThreadPoolExecutor(max_workers=4, thread_name_prefix="harvest") as pool:
@@ -147,7 +163,7 @@ class Harvester:
                     with self._lock:
                         self.status["done"] += 1
                         self.status["skipped"] += 0 if moments else 1
-            clips = select(results, count, breathers)
+            clips = selector(results, self._progress)
             with self._lock:
                 self.status.update(state="done", clips=clips)
         except Exception as exc:  # noqa: BLE001 - surfaced to the UI

@@ -2,7 +2,7 @@
 // planPromo is the pure part (tested); runAutoPromo orchestrates the app around it.
 
 import type { InfoRow, LayoutType, Sequence, Style, TextConfig, TextStyle, Zone } from '../types/session';
-import { api, mediaUrl } from './api';
+import { api, mediaUrl, type HarvestVersion } from './api';
 import { estimateTempo, findDrop, mixToMono } from './bpm';
 import { renderGraphicsTrack } from './graphicsLayer';
 import { harvestClips } from './harvest';
@@ -112,6 +112,7 @@ export interface AutoPromoOptions {
   typeId: VideoTypeId;
   text: { title: string; hooks: string[]; rows: InfoRow[]; cta: string };
   exportWhenDone: boolean;
+  harvestVersion: HarvestVersion;
 }
 
 export type StepReporter = (step: string, detail?: string) => void;
@@ -152,7 +153,8 @@ export async function runAutoPromo(opts: AutoPromoOptions, onStep: StepReporter)
 
   onStep('Harvesting moments', `${paths.length} files`);
   const count = Math.min(80, Math.max(20, Math.round(opts.lengthSec * 1.4)));
-  const { added } = await harvestClips(paths, count, 4, (done, total) => onStep('Harvesting moments', `${done}/${total} files`));
+  const { added } = await harvestClips(paths, count, 4, opts.harvestVersion,
+    (phase, done, total) => onStep('Harvesting moments', `${phase} ${done}/${total}`));
   if ((store().session?.clips.length ?? 0) === 0) throw new Error('No usable moments found in those files.');
   onStep('Harvesting moments', `${added} clips added`);
   await waitForClips(onStep);

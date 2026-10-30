@@ -41,6 +41,9 @@ class Clip(_Model):
     # Dominant look of the frame at the anchor (see color.py), used to spread colors in the edit.
     color_tag: Optional[str] = None
     color_rgb: Optional[list[int]] = Field(None, min_length=3, max_length=3)
+    # Detail of the anchor frame as a full-screen crop (harvest v2): 1 sharp, < 0.5 too soft
+    # for full screen. None = not measured.
+    quality: Optional[float] = Field(None, ge=0, le=1)
     # Source time of the proxy's first frame. `-c copy` snaps to the previous
     # keyframe, so this is <= in_sec.
     proxy_start_sec: Optional[float] = None

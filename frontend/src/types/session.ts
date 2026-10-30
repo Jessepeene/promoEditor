@@ -22,6 +22,8 @@ export interface Clip {
   /** Dominant look at the anchor: dark_ambient | neutral | red | orange | … | 'unknown'. */
   color_tag?: string | null;
   color_rgb?: [number, number, number] | null;
+  /** Detail of the anchor frame as a full-screen crop (harvest v2): 1 sharp, < SOFT_QUALITY too soft for full screen. */
+  quality?: number | null;
   /** Source time of the proxy's first frame (stream copy snaps to a keyframe). */
   proxy_start_sec?: number | null;
   proxy_status?: ProxyStatus;

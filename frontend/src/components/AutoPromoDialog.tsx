@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { api, mediaUrl } from '../lib/api';
+import { api, mediaUrl, type HarvestVersion } from '../lib/api';
 import { runAutoPromo, VIDEO_TYPES, type VideoTypeId } from '../lib/autoPromo';
 import { parseInfoRows } from '../lib/graphicsLayer';
 import { useStore } from '../lib/store';
@@ -26,6 +26,7 @@ export default function AutoPromoDialog({ onClose }: { onClose: () => void }) {
   const [rows, setRows] = useState('');
   const [cta, setCta] = useState('');
   const [exportWhenDone, setExportWhenDone] = useState(false);
+  const [harvestVersion, setHarvestVersion] = useState<HarvestVersion>(2);
   const [steps, setSteps] = useState<Step[]>([]);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -64,6 +65,7 @@ export default function AutoPromoDialog({ onClose }: { onClose: () => void }) {
           cta: cta.trim(),
         },
         exportWhenDone,
+        harvestVersion,
       }, report);
       setOutput(out);
       setFinished(true);
@@ -143,6 +145,13 @@ export default function AutoPromoDialog({ onClose }: { onClose: () => void }) {
               <label className="flex items-center gap-2">
                 <input type="checkbox" className="accent-rose-500" checked={exportWhenDone} onChange={(e) => setExportWhenDone(e.target.checked)} />
                 Export the MP4 when it's ready
+              </label>
+              <label className="flex items-center gap-2" title="v2 checks each candidate frame by frame (shake, flicker, cuts, focus, sharpness); v1 is the quick keyframe-only pick">
+                Harvest
+                <select className="input" value={harvestVersion} onChange={(e) => setHarvestVersion(e.target.value === '1' ? 1 : 2)}>
+                  <option value={2}>v2 (frame by frame)</option>
+                  <option value={1}>v1 (keyframes only)</option>
+                </select>
               </label>
             </section>
             {error && <pre className="whitespace-pre-wrap rounded bg-red-950 p-2 text-red-200">{error}</pre>}

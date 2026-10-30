@@ -2,7 +2,7 @@
 
 Local-first tool for cutting beat-synced event promo videos (9:16, 1080x1920).
 
-- **Logger** – scrub raw footage and tag moments with hotkeys (`1`–`4` energy anchors from vibe to peak, hold `0` for a breather range). Each mark is sliced losslessly in the background and gets a dominant-colour tag. For big folders: duplicate files are detected and hidden, a 20-tile grid of looping previews (`V`), and **Auto-harvest**, which picks ~35 good moments across all files without watching them.
+- **Logger** – scrub raw footage and tag moments with hotkeys (`1`–`4` energy anchors from vibe to peak, hold `0` for a breather range). Each mark is sliced losslessly in the background and gets a dominant-colour tag. For big folders: duplicate files are detected and hidden, a 20-tile grid of looping previews (`V`), and **Auto-harvest**, which picks ~35 good moments across all files without watching them. Harvest v2 (default) checks each candidate frame by frame: it ignores camera shake, light flicker and cuts inside the source, anchors on the peak of the action, puts the focus point on it and rates sharpness (soft clips stay off full screen). v1, the quick keyframe-only pick, is still selectable for comparison.
 - **Generator** – set BPM and drop, lay out zones (intro, stutter build, breather, drop), and roll a sequence of Beat Cards from the clip pool (no repeated source file within 4 cards, no back-to-back colours). Lock cards you like, reroll the rest, re-tier clips with `+`/`−` or the clip library, add event text (title, hook words, dates) in one of three styles, preview in real time, export to MP4.
 
 > **Status:** both tools run end-to-end on the sample media (log → roll → preview → export). Not yet tested with real camera footage.

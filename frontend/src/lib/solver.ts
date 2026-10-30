@@ -27,6 +27,12 @@ type Role = keyof typeof ROLE_TIERS;
 
 const hasColor = (c: Clip) => c.color_tag != null && c.color_tag !== 'unknown';
 
+/** Roles whose clip fills the whole frame. */
+const FULL_FRAME_ROLES: ReadonlySet<Role> = new Set(['hero', 'story', 'stutter', 'breather', 'outro']);
+/** Below this quality (measured by harvest v2) a clip looks soft blown up to full screen. */
+export const SOFT_QUALITY = 0.5;
+const isSoft = (c: Clip) => c.quality != null && c.quality < SOFT_QUALITY;
+
 /**
  * Draws clips one slot at a time and enforces the anti-clustering rules:
  *   - source cooldown: a source file can't reappear within `cooldown` slots
@@ -103,7 +109,12 @@ class ClipPool {
       { test: (c) => inTiers(tiers)(c) && !this.slotSources.has(c.source_path), fallback: false },
       { test: () => true, fallback: true },
     ];
-    for (const stage of stages) {
+    // Full-frame roles try sharp clips first (own or adjacent tier, variety rules kept); a soft
+    // clip still beats breaking those rules and can go full screen as a last resort.
+    const sharpFirst = FULL_FRAME_ROLES.has(role)
+      ? stages.slice(0, 2).map((s) => ({ ...s, test: (c: Clip) => !isSoft(c) && s.test(c) }))
+      : [];
+    for (const stage of [...sharpFirst, ...stages]) {
       const candidates = pool.filter(stage.test);
       if (candidates.length === 0) continue;
       const clip = this.rng.weighted(candidates, (c) => {

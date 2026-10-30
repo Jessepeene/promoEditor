@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { api } from '../lib/api';
+import { api, type HarvestVersion } from '../lib/api';
 import { harvestClips } from '../lib/harvest';
 import { useStore } from '../lib/store';
 
@@ -24,6 +24,8 @@ export default function FolderBar({ uploading, mode, onToggleMode, autoAdvance, 
   const [path, setPath] = useState(session?.source_folders.at(-1) ?? '');
   const [busy, setBusy] = useState(false);
   const [harvest, setHarvest] = useState<string | null>(null);
+  const [harvesting, setHarvesting] = useState(false);
+  const [version, setVersion] = useState<HarvestVersion>(2);
 
   const open = async (folder: string) => {
     if (!folder.trim()) return;
@@ -52,19 +54,23 @@ export default function FolderBar({ uploading, mode, onToggleMode, autoAdvance, 
   const runHarvest = async (count: number, breathers: number, label: string) => {
     // One copy of each duplicate group, whether or not duplicates are hidden in the playlist.
     const paths = folderFiles.map((f) => f.path).filter((p) => !duplicateOf[p]);
-    setHarvest(`${label}: analysing…`);
+    const tag = `${label} v${version}`;
+    setHarvest(`${tag}: scanning…`);
+    setHarvesting(true);
     try {
-      const { added, skipped } = await harvestClips(paths, count, breathers, (done, total) => setHarvest(`${label}: analysing ${done}/${total}…`));
-      setHarvest(`${label}: added ${added} clip(s)${skipped ? `, ${skipped} file(s) unusable` : ''}`);
+      const { added, skipped } = await harvestClips(paths, count, breathers, version,
+        (phase, done, total) => setHarvest(`${tag}: ${phase} ${done}/${total}…`));
+      setHarvest(`${tag}: added ${added} clip(s)${skipped ? `, ${skipped} file(s) unusable` : ''}`);
     } catch (e) {
       setHarvest(null);
-      setError(`${label}: ${(e as Error).message}`);
+      setError(`${tag}: ${(e as Error).message}`);
+    } finally {
+      setHarvesting(false);
     }
   };
 
   const counts = new Map<string, number>();
   for (const c of session?.clips ?? []) counts.set(c.source_path, (counts.get(c.source_path) ?? 0) + 1);
-  const analysing = harvest?.includes('analysing') ?? false;
   const dupeCount = Object.keys(duplicateOf).length;
 
   return (
@@ -108,7 +114,7 @@ export default function FolderBar({ uploading, mode, onToggleMode, autoAdvance, 
               e.currentTarget.blur();
               void runHarvest(HARVEST_COUNT, HARVEST_BREATHERS, 'Harvest');
             }}
-            disabled={analysing}
+            disabled={harvesting}
             title={`Pick the ${HARVEST_COUNT} most energetic moments (plus ${HARVEST_BREATHERS} calm breathers) across the folder, one copy of each duplicate`}
           >
             ✨ Auto-harvest
@@ -119,11 +125,24 @@ export default function FolderBar({ uploading, mode, onToggleMode, autoAdvance, 
               e.currentTarget.blur();
               void runHarvest(0, BROLL_MAX, 'B-roll');
             }}
-            disabled={analysing}
+            disabled={harvesting}
             title="Collect B-roll: the calmest well-exposed 4-second range shot from every file (tier 0 breathers)"
           >
             🎞 Harvest B-roll
           </button>
+          <select
+            className="input"
+            value={version}
+            disabled={harvesting}
+            onChange={(e) => {
+              setVersion(e.target.value === '1' ? 1 : 2);
+              e.currentTarget.blur();
+            }}
+            title="Harvest version. v2 checks each candidate frame by frame: ignores camera shake, light flicker and cuts in the source, puts the focus on the action and rates sharpness (soft clips stay off full screen). v1 is the quick keyframe-only pick."
+          >
+            <option value={2}>v2</option>
+            <option value={1}>v1</option>
+          </select>
           {harvest && <span className="text-xs text-emerald-300">{harvest}</span>}
         </>
       )}

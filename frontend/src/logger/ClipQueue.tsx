@@ -1,5 +1,6 @@
 import { api, mediaUrl } from '../lib/api';
 import { formatTime, LOOK_COLORS, TAG_COLORS, TAG_NAMES, TIERS } from '../lib/dom';
+import { SOFT_QUALITY } from '../lib/solver';
 import { removeClip, useStore } from '../lib/store';
 import type { Clip } from '../types/session';
 
@@ -108,6 +109,11 @@ export default function ClipQueue({ onJump }: { onJump: (clip: Clip) => void }) 
                   >
                     {clip.energy_tag} {TAG_NAMES[clip.energy_tag]}
                   </button>
+                  {clip.quality != null && clip.quality < SOFT_QUALITY && (
+                    <span className="rounded bg-zinc-700 px-1 text-[9px] text-zinc-300" title={`Soft picture (quality ${clip.quality.toFixed(2)}): kept off full screen while sharper clips are available`}>
+                      soft
+                    </span>
+                  )}
                   {clip.color_tag && clip.color_tag !== 'unknown' && (
                     <span
                       className="ml-auto h-2.5 w-2.5 rounded-sm border border-white/20"

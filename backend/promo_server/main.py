@@ -18,7 +18,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, ValidationError
 
-from . import ffmpeg_bin, projects
+from . import ffmpeg_bin, harvest, harvest_v2, projects
 from .exporter import Exporter
 from .glance import GlanceQueue
 from .broll import BrollPacker
@@ -278,13 +278,20 @@ def glance(req: PathsReq):
 class HarvestReq(PathsReq):
     count: int = Field(35, ge=0, le=200)  # 0 = only breathers (a B-roll harvest)
     breathers: int = Field(3, ge=0, le=200)
+    version: Literal[1, 2] = 2
 
 
 @app.post("/api/auto-harvest")
 def start_harvest(req: HarvestReq):
     paths = [str(_allowed_video(p)) for p in req.paths]
+
+    def selector(moments, progress):
+        if req.version == 1:
+            return harvest.select(moments, req.count, req.breathers)
+        return harvest_v2.select(moments, req.count, req.breathers, progress)
+
     try:
-        return harvester.start(paths, req.count, req.breathers)
+        return harvester.start(paths, selector)
     except RuntimeError as exc:
         raise HTTPException(409, str(exc)) from exc
 

@@ -177,6 +177,34 @@ describe('solver', () => {
   });
 });
 
+describe('clip quality', () => {
+  const softIds = (s: Session) => new Set(s.clips.filter((_, i) => i % 4 === 3).map((c) => c.clip_id));
+  const withQuality = (s: Session, measured: boolean) => {
+    const soft = softIds(s);
+    s.clips = s.clips.map((c) => ({ ...c, quality: measured ? (soft.has(c.clip_id) ? 0.2 : 0.9) : null }));
+    return s;
+  };
+  const softFullFrame = (s: Session, seed: number) =>
+    solve(s, seed).flatMap((x) => x.cells).filter((c) => c.region === 'full' && softIds(s).has(c.clip_id)).length;
+
+  it('keeps soft clips off full screen when sharp ones can fill it', () => {
+    for (const seed of [1, 2, 3, 4, 5]) {
+      // Control: unmeasured, the same clips do land full screen, so the rule below is what keeps them off.
+      expect(softFullFrame(withQuality(singleClipSession(), false), seed)).toBeGreaterThan(0);
+      expect(softFullFrame(withQuality(singleClipSession(), true), seed)).toBe(0);
+    }
+  });
+
+  it('still uses soft clips in small cells and as a last resort', () => {
+    const mixed = withQuality(session(), true);
+    const soft = softIds(mixed);
+    expect(solve(mixed).flatMap((x) => x.cells).some((c) => c.region !== 'full' && soft.has(c.clip_id))).toBe(true);
+    const allSoft = singleClipSession();
+    allSoft.clips = allSoft.clips.map((c) => ({ ...c, quality: 0.1 }));
+    expect(solve(allSoft).every((x) => x.cells.length > 0)).toBe(true);
+  });
+});
+
 describe('zone recipes, outro and effect intensity', () => {
   it('every recipe tiles from beat 0, drops on its drop beat and ends on an end card', () => {
     for (const r of ZONE_RECIPES) {

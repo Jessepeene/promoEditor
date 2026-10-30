@@ -35,10 +35,16 @@ export interface HarvestClip {
   anchor_sec: number | null;
   in_sec: number;
   out_sec: number;
+  focus_xy: [number, number];
+  quality: number | null;
 }
+
+export type HarvestVersion = 1 | 2;
 
 export interface HarvestStatus {
   state: 'idle' | 'running' | 'done' | 'error';
+  /** scanning (pass 1, per file) → refining / breathers (v2, per candidate) */
+  phase?: string;
   done?: number;
   total?: number;
   skipped?: number;
@@ -148,8 +154,8 @@ export const api = {
     return fetch('/api/text-track', { method: 'POST', body: form }).then(json<{ text_track_id: string }>);
   },
   glance: (paths: string[]) => fetch('/api/glance', send('POST', { paths })).then(json<Record<string, GlanceStatus>>),
-  startHarvest: (paths: string[], count: number, breathers: number) =>
-    fetch('/api/auto-harvest', send('POST', { paths, count, breathers })).then(json<HarvestStatus>),
+  startHarvest: (paths: string[], count: number, breathers: number, version: HarvestVersion) =>
+    fetch('/api/auto-harvest', send('POST', { paths, count, breathers, version })).then(json<HarvestStatus>),
   harvestStatus: () => fetch('/api/auto-harvest').then(json<HarvestStatus>),
   startBrollPack: () => fetch('/api/broll-pack', { method: 'POST' }).then(json<BrollStatus>),
   brollStatus: () => fetch('/api/broll-pack').then(json<BrollStatus>),
