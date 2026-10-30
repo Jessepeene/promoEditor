@@ -2,6 +2,7 @@
 // Rebuilt whenever the session object changes.
 
 import type { Cell, Clip, Session, Slot } from '../types/session';
+import { graphicsSchedule, type GraphicsEvent } from '../lib/graphicsLayer';
 import { beatToFrame, cellTiming, layoutRegions, promoFrameCount, type CellTiming, type Rect } from '../lib/timing';
 
 /** Matches compiler.XFADE_FRAMES. */
@@ -30,6 +31,7 @@ export interface PlannedSlot {
 export interface Plan {
   slots: PlannedSlot[];
   totalFrames: number;
+  graphics: GraphicsEvent[];
 }
 
 export function buildPlan(session: Session): Plan {
@@ -62,7 +64,7 @@ export function buildPlan(session: Session): Plan {
     cells.sort((a, b) => a.layer - b.layer);
     return { slot, index, startFrame, endFrame, cells };
   });
-  return { slots: out, totalFrames: promoFrameCount(session) };
+  return { slots: out, totalFrames: promoFrameCount(session), graphics: graphicsSchedule(session) };
 }
 
 /** Slot showing at `frame` (binary search), or null in a gap. */

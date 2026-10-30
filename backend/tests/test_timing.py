@@ -91,7 +91,7 @@ def test_slip_shifts_anchor_by_frames():
 
 def test_window_fit_slows_instead_of_overrunning():
     s = _session(bpm=90)
-    clip = Clip(clip_id="c", source_path="x", mode="RANGE", in_sec=5, out_sec=6, energy_tag=4)
+    clip = Clip(clip_id="c", source_path="x", mode="RANGE", in_sec=5, out_sec=6, energy_tag=0)
     slot = Slot(slot_id="s", start_beat=0, duration_beats=4, zone_type="VOCAL_BREATHER",
                 fx=SlotFx(speed_ramp=False, speed=0.75))
     t = cell_timing(s, slot, Cell(region="full", clip_id="c"), clip)

@@ -27,6 +27,11 @@ def run(args: list[str], timeout: Optional[float] = None) -> subprocess.Complete
     )
 
 
+def run_bytes(args: list[str], timeout: Optional[float] = None) -> subprocess.CompletedProcess:
+    """Like `run`, but stdout/stderr stay bytes (raw PCM / video frames)."""
+    return subprocess.run(args, capture_output=True, timeout=timeout, creationflags=_NO_WINDOW)
+
+
 def _encoders(exe: str) -> str:
     try:
         return run([exe, "-hide_banner", "-encoders"], timeout=15).stdout

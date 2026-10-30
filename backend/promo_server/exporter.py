@@ -14,7 +14,7 @@ from typing import Optional
 
 from . import ffmpeg_bin
 from .compiler import describe, plan_export
-from .models import Session
+from .models import Session, TextTrack
 from .workspace import Workspace
 
 log = logging.getLogger(__name__)
@@ -37,7 +37,11 @@ class Exporter:
         with self._lock:
             self.status = {**self.status, **kw}
 
-    def start(self, session: Session) -> dict:
+    @property
+    def busy(self) -> bool:
+        return bool(self._thread and self._thread.is_alive())
+
+    def start(self, session: Session, text: Optional[tuple[TextTrack, Path]] = None) -> dict:
         with self._lock:
             if self._thread and self._thread.is_alive():
                 raise RuntimeError("An export is already running.")
@@ -46,7 +50,7 @@ class Exporter:
             output = self.ws.exports / f"promo_{stamp}.mp4"
             self.status = {"state": "planning", "progress": 0.0, "output": None, "error": None,
                            "message": "Compiling filtergraph", "started": time.time()}
-            self._thread = threading.Thread(target=self._run, args=(session, output), daemon=True)
+            self._thread = threading.Thread(target=self._run, args=(session, output, text), daemon=True)
             self._thread.start()
             return self.status
 
@@ -71,11 +75,11 @@ class Exporter:
         if proc.returncode != 0:
             raise RuntimeError(err.strip()[-1500:] or f"ffmpeg exited with {proc.returncode}")
 
-    def _run(self, session: Session, output: Path) -> None:
+    def _run(self, session: Session, output: Path, text: Optional[tuple[TextTrack, Path]]) -> None:
         work = self.ws.exports / f".work_{output.stem}"
         work.mkdir(parents=True, exist_ok=True)
         try:
-            plan = plan_export(session, self.ws, work, output)
+            plan = plan_export(session, self.ws, work, output, text)
             output.with_suffix(".commands.txt").write_text(describe(plan), encoding="utf-8")
             n = len(plan.segments)
             self._set(state="rendering", message=f"Rendering {n} segments", segments=n, segments_done=0)
@@ -100,3 +104,5 @@ class Exporter:
         finally:
             if os.environ.get("PROMO_KEEP_SEGMENTS") != "1":
                 shutil.rmtree(work, ignore_errors=True)
+                if text:  # the UI renders a fresh text layer for every export
+                    shutil.rmtree(text[1], ignore_errors=True)

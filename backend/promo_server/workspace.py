@@ -22,7 +22,7 @@ from typing import Optional
 from .models import Session
 
 SIDECAR_FIELDS = ("proxy_path", "proxy_start_sec", "proxy_status", "proxy_error", "preview_path", "thumb_path",
-                  "source_duration_sec")
+                  "source_duration_sec", "color_tag", "color_rgb")
 VIDEO_EXTS = {".mp4", ".mov", ".m4v", ".webm", ".mkv"}
 
 
@@ -60,7 +60,7 @@ class Workspace:
             session = self.load()
         roots += [Path(f) for f in session.source_folders]
         refs = [c.source_path for c in session.clips]
-        refs += [session.sequence.audio_path or "", session.sequence.style.overlay.path or ""]
+        refs += [session.sequence.audio_path or ""] + [logo.path for logo in session.sequence.style.logos]
         for r in roots:
             try:
                 p.relative_to(r.resolve())
@@ -118,11 +118,6 @@ class Workspace:
             tmp = self.sidecar_path(clip_id).with_suffix(".json.tmp")
             tmp.write_text(json.dumps(current, indent=2), encoding="utf-8")
             os.replace(tmp, self.sidecar_path(clip_id))
-
-    def remove_clip_cache(self, clip_id: str) -> None:
-        for p in (self.cache / f"{clip_id}.mp4", self.cache / f"{clip_id}.preview.mp4",
-                  self.sidecar_path(clip_id), self.thumbs / f"{clip_id}.jpg"):
-            p.unlink(missing_ok=True)
 
 
 def source_key(clip) -> str:

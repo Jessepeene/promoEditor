@@ -45,6 +45,41 @@ def bounce_scale(t: float) -> float:
     return 1.0 + BOUNCE_AMP * math.exp(-BOUNCE_DECAY * max(t, 0.0))
 
 
+# --- per-cell motion: push (slow zoom) and impact shake -------------------------
+PUSH_AMP = 0.10
+# Shake needs headroom: at this zoom the window can move ±1.9% before showing an edge.
+SHAKE_BASE_ZOOM = 1.04
+SHAKE_AMP_X = 0.012  # fraction of the cell width
+SHAKE_AMP_Y = 0.010
+SHAKE_DECAY = 9.0
+SHAKE_FREQ_X = 13.0
+SHAKE_FREQ_Y = 17.0
+
+# --- slot-level looks (shared with the WebGL post pass) --------------------------
+DIM_LEVEL = 0.55
+INVERT_FRAMES = 2
+STROBE_FRAMES = 16  # black on frames 2-3, 6-7, ... of the slot's first 16
+ECHO_DECAY = 0.82
+
+
+def cell_zoom(t: float, dur: float, bounce: bool, push: str, shake: bool) -> float:
+    """Zoom of a cell `t` seconds after it appears (`dur` = its nominal length)."""
+    z = bounce_scale(t) if bounce else 1.0
+    if push != "NONE" and dur > 0:
+        x = min(max(t / dur, 0.0), 1.0)
+        z *= 1.0 + PUSH_AMP * (x if push == "IN" else 1.0 - x)
+    if shake:
+        z *= SHAKE_BASE_ZOOM
+    return z
+
+
+def shake_offset(t: float) -> tuple[float, float]:
+    """Shake displacement as fractions of the cell size."""
+    env = math.exp(-SHAKE_DECAY * max(t, 0.0))
+    return (SHAKE_AMP_X * env * math.sin(2 * math.pi * SHAKE_FREQ_X * t),
+            SHAKE_AMP_Y * env * math.sin(2 * math.pi * SHAKE_FREQ_Y * t))
+
+
 # ---------------------------------------------------------------------------
 # Layout regions
 # ---------------------------------------------------------------------------
@@ -75,6 +110,12 @@ def layout_regions(layout: str, params: LayoutParams, width: int, height: int) -
         ph = pw if params.pip_aspect == "1:1" else 2 * int(math.floor(pw * 0.75 / 2 + 0.5))
         regions["pip"] = ((width - pw) // 2 // 2 * 2, (height - ph) // 2 // 2 * 2, pw, ph)
         return regions
+    if layout == "SPLIT_2":
+        if params.split == "COLS":
+            xs = _even_split(width, 2)
+            return {f"half{i}": (xs[i], 0, xs[i + 1] - xs[i], height) for i in range(2)}
+        ys = _even_split(height, 2)
+        return {f"half{i}": (0, ys[i], width, ys[i + 1] - ys[i]) for i in range(2)}
     if layout == "STROBE_MATRIX":
         cols, rows = matrix_dims(params.matrix)
         xs, ys = _even_split(width, cols), _even_split(height, rows)

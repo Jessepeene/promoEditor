@@ -2,10 +2,12 @@
 
 Local-first tool for cutting beat-synced event promo videos (9:16, 1080x1920).
 
-- **Logger** – scrub raw footage and tag moments with hotkeys (`1`/`2`/`3` anchors, hold `4` for ranges). Each mark is sliced losslessly in the background.
-- **Generator** – set BPM and drop, lay out zones (intro, stutter build, breather, drop), and roll a sequence of Beat Cards from the clip pool. Lock cards you like, reroll the rest, preview in real time, export to MP4.
+- **Logger** – scrub raw footage and tag moments with hotkeys (`1`–`4` energy anchors from vibe to peak, hold `0` for a breather range). Each mark is sliced losslessly in the background and gets a dominant-colour tag. For big folders: duplicate files are detected and hidden, a 20-tile grid of looping previews (`V`), and **Auto-harvest**, which picks ~35 good moments across all files without watching them.
+- **Generator** – set BPM and drop, lay out zones (intro, stutter build, breather, drop), and roll a sequence of Beat Cards from the clip pool (no repeated source file within 4 cards, no back-to-back colours). Lock cards you like, reroll the rest, re-tier clips with `+`/`−` or the clip library, add event text (title, hook words, dates) in one of three styles, preview in real time, export to MP4.
 
-> **Status:** the backend (slicing, waveform, export) and the core logic (timing, solver, BPM detection) work and are tested. The Logger/Generator UI and the WebGL preview are still in progress.
+> **Status:** both tools run end-to-end on the sample media (log → roll → preview → export). Not yet tested with real camera footage.
+
+- **✨ Auto promo** – pick a song, a clips folder, a length (15–60 s) and a video type; it harvests the clips, finds the BPM and the drop, builds the structure, styles it, rolls the Beat Cards and can export the MP4 in one go.
 
 ## Layout
 
@@ -16,7 +18,7 @@ shared/     Fixtures shared by both test suites (timing parity)
 scripts/    make_samples.py – synthetic test clips and a 128 BPM track
 ```
 
-The session lives in `workspace/session.promo.json`, with proxies in `workspace/.cache/`.
+Projects live under `workspace/`: the original workspace is the "Default" project and every other project is a folder in `workspace/projects/<name>/`, each with its own `session.promo.json`, `.cache/` (slices) and `exports/`. Switch, create or "save as" from the 📁 menu in the header.
 
 ## Setup
 
@@ -38,10 +40,11 @@ cd frontend && npm install
 ```sh
 # backend (port 8765)
 cd backend && .venv/Scripts/python -m uvicorn promo_server.main:app --port 8765
-
-# frontend dev server (port 5173, proxies /api and /media to the backend)
-cd frontend && npm run dev
 ```
+
+Then either open http://127.0.0.1:8765 (serves `frontend/dist` after `npm run build`; restart the backend after building), or for development run `npm run dev` in `frontend/` and open http://localhost:5173 (proxies `/api` and `/media` to the backend).
+
+Use one browser tab per session: each tab autosaves the whole session, so two tabs overwrite each other.
 
 Optional sample media: `backend/.venv/Scripts/python scripts/make_samples.py`
 

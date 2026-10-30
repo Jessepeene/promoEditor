@@ -2,13 +2,14 @@
 
 Each slot renders to its own intermediate segment with an exact frame count,
 so beat timing never drifts no matter how many cuts there are. A final pass
-joins the segments (concat / xfade), adds the global VHS layer, the pinned
-typography overlay and the trimmed music track, and encodes the delivery MP4.
+joins the segments (concat / xfade), adds the global VHS layer, the browser-rendered
+graphics layer (text + logos) and the trimmed music track, and encodes the delivery MP4.
 
 Per-cell chain inside a segment:
     proxy -> setpts(PTS-STARTPTS) -> setpts(inverse speed curve) -> fps -> pad/trim
-          -> cover-scale + crop around focus_xy -> zoompan bounce
-Regions are combined with xstack (rows, matrix) and overlay (PiP).
+          -> cover-scale + crop around focus_xy -> zoompan (bounce / push / shake)
+Regions are combined with xstack (rows, matrix, split) and overlay (PiP); slot-level
+effects (mirror, blur, RGB split, glitch, flash, dim, invert, strobe, echo) follow.
 """
 
 from __future__ import annotations
@@ -19,10 +20,21 @@ from pathlib import Path
 from typing import Optional
 
 from . import ffmpeg_bin
-from .models import Cell, Clip, Session, Slot
+from .models import Cell, Clip, Session, Slot, TextTrack
 from .timing import (
     BOUNCE_AMP,
     BOUNCE_DECAY,
+    DIM_LEVEL,
+    ECHO_DECAY,
+    INVERT_FRAMES,
+    PUSH_AMP,
+    SHAKE_AMP_X,
+    SHAKE_AMP_Y,
+    SHAKE_BASE_ZOOM,
+    SHAKE_DECAY,
+    SHAKE_FREQ_X,
+    SHAKE_FREQ_Y,
+    STROBE_FRAMES,
     beat_to_frame,
     cell_timing,
     layout_regions,
@@ -144,11 +156,9 @@ class SegmentBuilder:
             f"crop=w={rw}:h={rh}:x='min(max({_num(fx)}*iw-ow/2,0),iw-ow)':y='min(max({_num(fy)}*ih-oh/2,0),ih-oh)'",
             "setsar=1",
         ]
-        if self.session.sequence.style.bounce and self.slot.fx.bounce:
-            chain.append(
-                f"zoompan=z='1+{BOUNCE_AMP}*exp(-{BOUNCE_DECAY}*it)':d=1"
-                f":x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':s={rw}x{rh}:fps={self.fps}"
-            )
+        zoompan = self._motion(frames / self.fps, rw, rh)
+        if zoompan:
+            chain.append(zoompan)
         chain.append("format=yuv420p")
         self.filters.append(f"[{idx}:v]" + ",".join(chain) + f"[{out}]")
         return out
@@ -231,6 +241,8 @@ class SegmentBuilder:
                                     f":enable='between(n,{a},{b - 1})'[{out}]")
                 base = out
 
+        if slot.fx.mirror:
+            base = self._mirror(base)
         if self.session.sequence.style.vhs_glitch and slot.fx.glitch:
             base = self._block_glitch(base)
         post = self._post_fx()
@@ -239,6 +251,32 @@ class SegmentBuilder:
         return [ffmpeg_bin.ffmpeg_exe(), "-y", "-v", "error", *self.inputs,
                 "-filter_complex", ";".join(self.filters), "-map", f"[{final}]",
                 "-frames:v", str(self.n + self.tail), "-r", str(self.fps), *encoder_args, str(out_path)]
+
+    def _motion(self, dur: float, rw: int, rh: int) -> Optional[str]:
+        """zoompan expression for timing.cell_zoom / shake_offset (`it` = seconds into the cell)."""
+        fx = self.slot.fx
+        bounce = self.session.sequence.style.bounce and fx.bounce
+        if not (bounce or fx.push != "NONE" or fx.shake):
+            return None
+        z = [f"(1+{BOUNCE_AMP}*exp(-{BOUNCE_DECAY}*it))"] if bounce else []
+        if fx.push != "NONE":
+            prog = f"min(max(it/{_num(dur)},0),1)"
+            z.append(f"(1+{PUSH_AMP}*{prog if fx.push == 'IN' else f'(1-{prog})'})")
+        x, y = "iw/2-iw/zoom/2", "ih/2-ih/zoom/2"
+        if fx.shake:
+            z.append(str(SHAKE_BASE_ZOOM))
+            env = f"exp(-{SHAKE_DECAY}*it)"
+            x += f"+iw*{SHAKE_AMP_X}*{env}*sin(2*PI*{SHAKE_FREQ_X}*it)"
+            y += f"+ih*{SHAKE_AMP_Y}*{env}*sin(2*PI*{SHAKE_FREQ_Y}*it)"
+        return f"zoompan=z='{'*'.join(z)}':d=1:x='{x}':y='{y}':s={rw}x{rh}:fps={self.fps}"
+
+    def _mirror(self, base: str) -> str:
+        """Left half mirrored onto the right half."""
+        a, b, half, out = self.label("m"), self.label("m"), self.label("m"), self.label("m")
+        self.filters.append(f"[{base}]split[{a}][{b}]")
+        self.filters.append(f"[{b}]crop=iw/2:ih:0:0,hflip[{half}]")
+        self.filters.append(f"[{a}][{half}]overlay=x=W/2:y=0[{out}]")
+        return out
 
     def _post_fx(self) -> list[str]:
         slot, style = self.slot, self.session.sequence.style
@@ -253,6 +291,15 @@ class SegmentBuilder:
             post.append(f"rgbashift=rh=-{px // 2}:bh={px // 2}:edge=smear:enable='between(n,4,7)'")
         if slot.fx.transition == "FLASH":
             post.append(f"fade=t=in:st=0:d={_num(min(0.12, self.n / self.fps / 2))}:color=white")
+        if slot.fx.dim:
+            post.append(f"colorchannelmixer=rr={DIM_LEVEL}:gg={DIM_LEVEL}:bb={DIM_LEVEL}")
+        if slot.fx.invert:
+            post.append(f"lutrgb=r=negval:g=negval:b=negval:enable='lt(n,{INVERT_FRAMES})'")
+        if slot.fx.strobe:
+            post.append(f"drawbox=x=0:y=0:w=iw:h=ih:color=black:t=fill"
+                        f":enable='lt(n,{STROBE_FRAMES})*eq(mod(floor(n/2),2),1)'")
+        if slot.fx.echo:
+            post.append(f"lagfun=decay={ECHO_DECAY}")
         return post
 
     def _block_glitch(self, base: str) -> str:
@@ -287,12 +334,54 @@ def _encoder_final() -> list[str]:
 INTERMEDIATE = ["-c:v", "libx264", "-preset", "ultrafast", "-crf", "12", "-pix_fmt", "yuv420p", "-an"]
 
 
-def plan_export(session: Session, ws: Workspace, work_dir: Path, output: Path) -> ExportPlan:
+def _ffconcat_path(p: Path) -> str:
+    return "'" + p.resolve().as_posix().replace("'", "'\\''") + "'"
+
+
+def write_text_concat(track: TextTrack, track_dir: Path, work_dir: Path) -> Path:
+    """ffconcat list that shows each text PNG for its frame span and a transparent frame elsewhere."""
+    blank = work_dir / "text_blank.png"
+    res = ffmpeg_bin.run([ffmpeg_bin.ffmpeg_exe(), "-y", "-v", "error", "-f", "lavfi", "-i",
+                          f"color=c=black@0.0:s={track.width}x{track.height},format=rgba", "-frames:v", "1",
+                          str(blank)], timeout=30)
+    if res.returncode != 0:
+        raise RuntimeError(f"could not create blank text frame: {res.stderr[-300:]}")
+    entries: list[tuple[Path, int]] = []
+    cursor = 0
+    for span in track.spans:
+        if span.start > cursor:
+            entries.append((blank, span.start - cursor))
+        entries.append((track_dir / span.file, span.end - span.start))
+        cursor = span.end
+    if cursor < track.total_frames:
+        entries.append((blank, track.total_frames - cursor))
+    lines = ["ffconcat version 1.0"]
+    for path, frames in entries:
+        if not path.exists():
+            raise FileNotFoundError(f"text frame missing: {path.name}")
+        # Without an explicit image rate the stream inherits a 1/25 s timebase and span
+        # edges round to the wrong frame.
+        lines += [f"file {_ffconcat_path(path)}", f"option framerate {track.fps}", f"duration {frames / track.fps:.6f}"]
+    # The concat demuxer ignores the last entry's duration unless the file is listed again.
+    lines += [f"file {_ffconcat_path(entries[-1][0])}", f"option framerate {track.fps}"]
+    out = work_dir / "text.ffconcat"
+    out.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return out
+
+
+def plan_export(session: Session, ws: Workspace, work_dir: Path, output: Path,
+                text: Optional[tuple[TextTrack, Path]] = None) -> ExportPlan:
     seq, fps = session.sequence, session.fps
     W, H = session.resolution
     total_frames = promo_frame_count(session)
     if total_frames <= 0:
         raise ValueError("Sequence is empty: add zones and roll the slot machine first.")
+    text_concat = None
+    if text:
+        track, track_dir = text
+        if (track.width, track.height, track.fps, track.total_frames) != (W, H, fps, total_frames):
+            raise ValueError("The text layer was rendered for a different timeline; export again.")
+        text_concat = write_text_concat(track, track_dir, work_dir)
 
     # Timeline of (start_frame, end_frame, slot|None) covering [0, total_frames).
     slots = sorted(seq.slots, key=lambda s: s.start_beat)
@@ -325,11 +414,12 @@ def plan_export(session: Session, ws: Workspace, work_dir: Path, output: Path) -
             seg.args = SegmentBuilder(session, ws, slot, a, n, tail).build(seg.out, INTERMEDIATE)
         segments.append(seg)
 
-    final_args = _final_pass(session, ws, segments, output, total_frames)
+    final_args = _final_pass(session, ws, segments, output, total_frames, text_concat)
     return ExportPlan(segments, final_args, output, total_frames)
 
 
-def _final_pass(session: Session, ws: Workspace, segments: list[Segment], output: Path, total: int) -> list[str]:
+def _final_pass(session: Session, ws: Workspace, segments: list[Segment], output: Path, total: int,
+                text_concat: Optional[Path]) -> list[str]:
     seq, fps = session.sequence, session.fps
     W, H = session.resolution
     args = [ffmpeg_bin.ffmpeg_exe(), "-y", "-v", "error"]
@@ -371,18 +461,12 @@ def _final_pass(session: Session, ws: Workspace, segments: list[Segment], output
         v = "vhs"
 
     n_inputs = len(segments)
-    ov = seq.style.overlay
-    if ov.path and ws.resolve(ov.path).exists():
-        args += ["-loop", "1", "-framerate", str(fps), "-i", str(ws.resolve(ov.path))]
-        ow = max(2, int(W * ov.width_frac) // 2 * 2)
-        filters.append(f"[{n_inputs}:v]scale={ow}:-1,format=rgba[ovs]")
-        if ov.motion == "JITTER":
-            x = "(W-w)/2+3*sin(2*PI*t*7.3)+2*sin(2*PI*t*13.1)"
-            y = "(H-h)/2+2*sin(2*PI*t*5.9)+2*sin(2*PI*t*11.7)"
-        else:
-            x, y = "(W-w)/2", "(H-h)/2"
-        filters.append(f"[{v}][ovs]overlay=x='{x}':y='{y}':shortest=1:format=auto[ovl]")
-        v = "ovl"
+    # The browser-rendered graphics layer (text + logos) sits above the video and its effects.
+    if text_concat:
+        args += ["-f", "concat", "-safe", "0", "-i", str(text_concat)]
+        filters.append(f"[{n_inputs}:v]fps={fps},format=rgba[txt]")
+        filters.append(f"[{v}][txt]overlay=0:0:eof_action=pass:format=auto[vtxt]")
+        v = "vtxt"
         n_inputs += 1
 
     filters.append(f"[{v}]format=yuv420p[vout]")

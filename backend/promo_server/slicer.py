@@ -17,7 +17,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Optional
 
-from . import ffmpeg_bin
+from . import color, ffmpeg_bin
 from .models import Clip
 from .workspace import Workspace, source_key
 
@@ -49,6 +49,7 @@ class Slicer:
         self._slow = ThreadPoolExecutor(max_workers=1, thread_name_prefix="preview")
         self._lock = threading.Lock()
         self._latest: dict[str, str] = {}  # clip_id -> source_key of the newest request
+        self._color_queued: set[str] = set()
 
     def submit(self, clip: Clip) -> None:
         key = source_key(clip)
@@ -97,6 +98,32 @@ class Slicer:
             log.exception("slice failed for %s", clip.clip_id)
             self.ws.write_sidecar(clip.clip_id, {"proxy_status": "error", "proxy_error": str(exc)})
 
+    def ensure_color(self, clip: Clip) -> None:
+        """Queue colour analysis for an already-sliced clip that predates it (once per run)."""
+        with self._lock:
+            if clip.clip_id in self._color_queued:
+                return
+            self._color_queued.add(clip.clip_id)
+        key = source_key(clip)
+        self._slow.submit(self._color, clip, key, clip.proxy_start_sec or 0.0)
+
+    def _color(self, clip: Clip, key: str, proxy_start: float) -> None:
+        # Skip only if this run re-sliced the clip since; backfilled clips have no entry yet.
+        if clip.clip_id in self._latest and self._stale(clip.clip_id, key):
+            return
+        proxy = self.ws.cache / f"{clip.clip_id}.mp4"
+        # The anchor for hits; the middle of a breather's range. Kept a little inside the
+        # window: a clip tagged on a file's very last frame would otherwise seek past the end.
+        look = clip.anchor_sec if clip.anchor_sec is not None else (clip.in_sec + clip.out_sec) / 2
+        look = max(clip.in_sec, min(look, clip.out_sec - 0.1))
+        result = color.clip_color(proxy, look - proxy_start) if proxy.exists() else None
+        if result:
+            tag, rgb = result
+            self.ws.write_sidecar(clip.clip_id, {"color_tag": tag, "color_rgb": list(rgb)})
+        else:
+            # Recorded so clients stop waiting for it; the solver ignores "unknown".
+            self.ws.write_sidecar(clip.clip_id, {"color_tag": "unknown", "color_rgb": None})
+
     def _finish(self, clip: Clip, key: str, proxy_start: float) -> None:
         if self._stale(clip.clip_id, key):
             return
@@ -109,6 +136,7 @@ class Slicer:
                             "-vf", "scale=320:-2", "-q:v", "4", str(thumb)], timeout=30)
             if thumb.exists():
                 self.ws.write_sidecar(clip.clip_id, {"thumb_path": self.ws.to_manifest_path(thumb)})
+        self._color(clip, key, proxy_start)
 
         preview = self.ws.cache / f"{clip.clip_id}.preview.mp4"
         tmp = preview.with_suffix(".tmp.mp4")

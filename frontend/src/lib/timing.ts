@@ -33,6 +33,46 @@ export function bounceScale(t: number): number {
   return 1 + BOUNCE_AMP * Math.exp(-BOUNCE_DECAY * Math.max(t, 0));
 }
 
+// --- per-cell motion: push (slow zoom) and impact shake ---------------------------
+export const PUSH_AMP = 0.1;
+/** Shake needs headroom: at this zoom the window can move ±1.9% before showing an edge. */
+export const SHAKE_BASE_ZOOM = 1.04;
+export const SHAKE_AMP_X = 0.012;
+export const SHAKE_AMP_Y = 0.01;
+export const SHAKE_DECAY = 9;
+export const SHAKE_FREQ_X = 13;
+export const SHAKE_FREQ_Y = 17;
+
+// --- slot-level looks (shared with the export's post chain) -----------------------
+export const DIM_LEVEL = 0.55;
+export const INVERT_FRAMES = 2;
+export const STROBE_FRAMES = 16;
+export const ECHO_DECAY = 0.82;
+
+/** Black on frames 2-3, 6-7, ... of the slot's first STROBE_FRAMES (export: drawbox enable). */
+export const strobeBlack = (localFrame: number) =>
+  localFrame < STROBE_FRAMES && Math.floor(localFrame / 2) % 2 === 1;
+
+/** Zoom of a cell `t` seconds after it appears (`dur` = its nominal length). */
+export function cellZoom(t: number, dur: number, bounce: boolean, push: 'NONE' | 'IN' | 'OUT', shake: boolean): number {
+  let z = bounce ? bounceScale(t) : 1;
+  if (push !== 'NONE' && dur > 0) {
+    const x = Math.min(Math.max(t / dur, 0), 1);
+    z *= 1 + PUSH_AMP * (push === 'IN' ? x : 1 - x);
+  }
+  if (shake) z *= SHAKE_BASE_ZOOM;
+  return z;
+}
+
+/** Shake displacement as fractions of the cell size. */
+export function shakeOffset(t: number): [number, number] {
+  const env = Math.exp(-SHAKE_DECAY * Math.max(t, 0));
+  return [
+    SHAKE_AMP_X * env * Math.sin(2 * Math.PI * SHAKE_FREQ_X * t),
+    SHAKE_AMP_Y * env * Math.sin(2 * Math.PI * SHAKE_FREQ_Y * t),
+  ];
+}
+
 // ---------------------------------------------------------------------------
 // Layout regions
 // ---------------------------------------------------------------------------
@@ -70,6 +110,17 @@ export function layoutRegions(layout: LayoutType, params: LayoutParams, width: n
       const y = Math.floor(Math.floor((height - ph) / 2) / 2) * 2;
       regions.pip = [x, y, pw, ph];
       return regions;
+    }
+    case 'SPLIT_2': {
+      const out: Record<string, Rect> = {};
+      if (params.split === 'COLS') {
+        const xs = evenSplit(width, 2);
+        for (let i = 0; i < 2; i++) out[`half${i}`] = [xs[i], 0, xs[i + 1] - xs[i], height];
+      } else {
+        const ys = evenSplit(height, 2);
+        for (let i = 0; i < 2; i++) out[`half${i}`] = [0, ys[i], width, ys[i + 1] - ys[i]];
+      }
+      return out;
     }
     case 'STROBE_MATRIX': {
       const [cols, rows] = matrixDims(params.matrix);

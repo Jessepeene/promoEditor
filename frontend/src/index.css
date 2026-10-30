@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-ink-950 text-zinc-200 antialiased;
+  font-family: Inter, system-ui, 'Segoe UI', sans-serif;
+  overflow: hidden;
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center gap-1.5 rounded-md border border-ink-600 bg-ink-800 px-2.5 py-1 text-xs font-medium text-zinc-200 transition hover:bg-ink-700 disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .btn-primary {
+    @apply border-rose-500/60 bg-rose-600 text-white hover:bg-rose-500;
+  }
+  .input {
+    @apply rounded-md border border-ink-600 bg-ink-900 px-2 py-1 text-xs text-zinc-100 outline-none focus:border-rose-500;
+  }
+  .kbd {
+    @apply rounded border border-ink-600 bg-ink-800 px-1 font-mono text-[10px] text-zinc-300;
+  }
+  .panel-title {
+    @apply mb-2 text-[11px] font-semibold uppercase tracking-wider text-zinc-500;
+  }
+}

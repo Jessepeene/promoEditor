@@ -7,7 +7,9 @@ export const ENV_RATE = 200; // onset-envelope samples per second
  * Returns one value per 1/ENV_RATE seconds.
  */
 export function onsetEnvelope(samples: Float32Array, sampleRate: number): Float32Array {
-  const hop = Math.max(1, Math.round(sampleRate / ENV_RATE));
+  // Fractional hop: frame i covers [i*hop, (i+1)*hop), so the envelope is exactly ENV_RATE
+  // frames per second at any sample rate (44.1 kHz would otherwise round to 221 and skew tempo).
+  const hop = sampleRate / ENV_RATE;
   const n = Math.floor(samples.length / hop);
   const env = new Float32Array(n);
   // One-pole low-pass (~150 Hz) isolates kicks; full band catches snares/hats.
@@ -18,14 +20,16 @@ export function onsetEnvelope(samples: Float32Array, sampleRate: number): Float3
   for (let i = 0; i < n; i++) {
     let full = 0;
     let low = 0;
-    for (let j = i * hop; j < (i + 1) * hop; j++) {
+    const from = Math.round(i * hop);
+    const to = Math.round((i + 1) * hop);
+    for (let j = from; j < to; j++) {
       const x = samples[j];
       lp = a * lp + (1 - a) * x;
       full += x * x;
       low += lp * lp;
     }
-    const lf = Math.log1p(1000 * (full / hop));
-    const ll = Math.log1p(1000 * (low / hop));
+    const lf = Math.log1p(1000 * (full / (to - from)));
+    const ll = Math.log1p(1000 * (low / (to - from)));
     env[i] = Math.max(lf - prevFull, 0) + 2 * Math.max(ll - prevLow, 0);
     prevFull = lf;
     prevLow = ll;
@@ -137,6 +141,49 @@ export function strongestOnsetNear(env: Float32Array, t: number, window: number)
     }
   }
   return best / ENV_RATE;
+}
+
+/**
+ * Find the drop: the beat where energy jumps the most from the 8 beats before to the
+ * 8 beats after, weighting the low end (drops bring the kick and bass back). Every beat is
+ * a candidate (the detected phase need not be a downbeat); among near-equal jumps the earliest
+ * wins, since promos use the first drop. Returns the drop time in seconds, or null if
+ * the track is too short to judge.
+ */
+export function findDrop(samples: Float32Array, sampleRate: number, bpm: number, firstBeatSec: number, minIntroBeats = 8): number | null {
+  const beatLen = (60 / bpm) * sampleRate;
+  const a = Math.exp((-2 * Math.PI * 150) / sampleRate);
+  // Energy per beat: 0.6 low band + 0.4 full band.
+  const energies: number[] = [];
+  let lp = 0;
+  let pos = Math.round(firstBeatSec * sampleRate);
+  for (let i = 0; i < Math.max(0, pos); i++) lp = a * lp + (1 - a) * samples[i];
+  for (let start = Math.max(0, pos); start + beatLen <= samples.length; start += beatLen) {
+    let full = 0;
+    let low = 0;
+    const end = Math.floor(start + beatLen);
+    for (let i = Math.floor(start); i < end; i++) {
+      const x = samples[i];
+      lp = a * lp + (1 - a) * x;
+      full += x * x;
+      low += lp * lp;
+    }
+    const n = end - Math.floor(start);
+    energies.push(0.6 * (low / n) + 0.4 * (full / n));
+  }
+  const W = 8;
+  const mean = (from: number, to: number) => energies.slice(from, to).reduce((s, v) => s + v, 0) / Math.max(1, to - from);
+  const scores: { beat: number; score: number }[] = [];
+  for (let k = Math.max(W, minIntroBeats); k + W <= energies.length; k++) {
+    scores.push({ beat: k, score: mean(k, k + W) / (mean(k - W, k) + 1e-9) });
+  }
+  if (scores.length === 0) return null;
+  const best = Math.max(...scores.map((s) => s.score));
+  // Earliest strong jump, but only at a local peak: the beats just before a drop already
+  // overlap it and score nearly as high, which would land the drop a beat early.
+  const isPeak = (i: number) => scores.slice(Math.max(0, i - 2), i + 3).every((s) => s.score <= scores[i].score);
+  const index = scores.findIndex((s, i) => s.score >= 0.85 * best && isPeak(i));
+  return firstBeatSec + scores[Math.max(index, 0)].beat * (60 / bpm);
 }
 
 export function mixToMono(buffer: { numberOfChannels: number; length: number; getChannelData(c: number): Float32Array }): Float32Array {

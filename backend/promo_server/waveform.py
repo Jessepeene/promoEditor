@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import subprocess
 from pathlib import Path
 
 import numpy as np
@@ -22,10 +21,10 @@ def extract_peaks(audio: Path, cache_dir: Path) -> dict:
     if cache.exists():
         return json.loads(cache.read_text())
 
-    raw = subprocess.run(
+    raw = ffmpeg_bin.run_bytes(
         [ffmpeg_bin.ffmpeg_exe(), "-v", "error", "-i", str(audio), "-ac", "1", "-ar", str(SAMPLE_RATE),
          "-f", "s16le", "-"],
-        capture_output=True, timeout=300, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+        timeout=300,
     )
     if raw.returncode != 0:
         raise RuntimeError(raw.stderr.decode(errors="replace")[-400:])

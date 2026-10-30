@@ -20,24 +20,32 @@ void main() {
   outColor = vec4(c.rgb, c.a) * uAlpha;
 }`;
 
-// Full-frame post pass. Mirrors the export's post chain:
-// crossfade mix, vertical motion blur (gblur sigmaV), rgbashift, band glitch,
-// white flash (fade color=white), VHS scanlines + grain + eq.
+// Full-frame post pass, in the export's order:
+//   crossfade mix · mirror · band glitch · vertical blur · RGB split · white flash ·
+//   dim · invert · strobe · echo (lagfun) · then the global VHS layer.
+// Output 0 is the final colour; output 1 is the pre-VHS colour, fed back next frame for echo.
 export const POST_FS = `#version 300 es
 precision highp float;
 in vec2 vUv;
 uniform sampler2D uSceneA;
 uniform sampler2D uSceneB;
+uniform sampler2D uPrev;     // previous frame's pre-VHS colour (echo feedback)
 uniform float uMix;          // weight of B (the outgoing slot) during a crossfade; 0 = A only
 uniform vec2 uRes;           // canvas size, px
+uniform float uMirror;       // 0/1: left half mirrored onto the right
 uniform float uRgbPx;        // horizontal R/B offset, px
 uniform float uBlurPx;       // vertical blur sigma, px
 uniform vec4 uBands[3];      // glitch bands: y0, y1 (uv), dx (uv), active
 uniform float uFlash;        // 0..1 white
+uniform float uDim;          // colour multiplier (1 = off)
+uniform float uInvert;       // 0/1
+uniform float uBlack;        // 0/1: strobe frame
+uniform float uEcho;         // lagfun decay; 0 = off
 uniform float uVhs;          // 0/1
 uniform float uLinePx;       // scanline period, px
 uniform float uTime;
-out vec4 outColor;
+layout(location = 0) out vec4 outColor;
+layout(location = 1) out vec4 outPre;
 
 vec3 sceneAt(vec2 uv) {
   vec3 a = texture(uSceneA, uv).rgb;
@@ -62,6 +70,7 @@ float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.545
 
 void main() {
   vec2 uv = vUv;
+  if (uMirror > 0.5 && uv.x > 0.5) uv.x = 1.0 - uv.x;
   for (int i = 0; i < 3; i++) {
     vec4 b = uBands[i];
     if (b.w > 0.5 && uv.y >= b.x && uv.y < b.y) uv.x -= b.z;
@@ -74,6 +83,11 @@ void main() {
     c = blurred(uv);
   }
   c = mix(c, vec3(1.0), uFlash);
+  c *= uDim;
+  if (uInvert > 0.5) c = 1.0 - c;
+  if (uBlack > 0.5) c = vec3(0.0);
+  if (uEcho > 0.0) c = max(c, texture(uPrev, vUv).rgb * uEcho);
+  outPre = vec4(c, 1.0);
   if (uVhs > 0.5) {
     float y = gl_FragCoord.y;
     float line = step(mod(y, uLinePx), max(uLinePx * 0.25, 0.5));

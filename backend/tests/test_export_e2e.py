@@ -41,7 +41,7 @@ def test_slice_and_export(tmp_path):
         session.clips.append(Clip(clip_id=f"c_{i:03d}", source_path=str(raw), in_sec=4.3, anchor_sec=6.3,
                                   out_sec=8.3, energy_tag=tag, focus_xy=(0.3, 0.6)))
     session.clips.append(Clip(clip_id="c_r", source_path=str(raws[0]), mode="RANGE", in_sec=1.0, out_sec=3.5,
-                              energy_tag=4))
+                              energy_tag=0))
     ws.save(session)
 
     slicer = Slicer(ws)
@@ -59,11 +59,13 @@ def test_slice_and_export(tmp_path):
     seq.audio_path = str(SAMPLES / "audio" / "track_128bpm.wav")
     seq.style.vhs_glitch = True
     seq.zones = [Zone(start_beat=0, end_beat=4, type="VOCAL_BREATHER"),
-                 Zone(start_beat=4, end_beat=12, type="HYBRID_DROP")]
-    drop_fx = SlotFx(bounce=True, rgb_split=True, glitch=True)
+                 Zone(start_beat=4, end_beat=12, type="HYBRID_DROP"),
+                 Zone(start_beat=12, end_beat=14, type="OUTRO")]
+    drop_fx = SlotFx(bounce=True, rgb_split=True, glitch=True, shake=True, invert=True, strobe=True)
     seq.slots = [
         Slot(slot_id="s0", start_beat=0, duration_beats=4, zone_type="VOCAL_BREATHER",
-             cells=[Cell(region="full", clip_id="c_r")], fx=SlotFx(speed_ramp=False, speed=0.75)),
+             cells=[Cell(region="full", clip_id="c_r")], fx=SlotFx(speed_ramp=False, speed=0.75, echo=True,
+                                                                     push="IN")),
         Slot(slot_id="s1", start_beat=4, duration_beats=1, zone_type="HYBRID_DROP",
              cells=[Cell(region="full", clip_id=ids[0])], fx=drop_fx),
         Slot(slot_id="s2", start_beat=5, duration_beats=2, zone_type="HYBRID_DROP", layout="STACK_3_ROW",
@@ -77,10 +79,14 @@ def test_slice_and_export(tmp_path):
              cells=[Cell(region="full", clip_id=ids[0], anchor_lock="MIDPOINT"),
                     Cell(region="pip", clip_id=ids[1], start=0.5, end=1.0),
                     Cell(region="pip", clip_id=ids[2], start=1.5, end=2.0)],
-             fx=SlotFx(transition="FLASH")),
+             fx=SlotFx(transition="FLASH", mirror=True)),
         Slot(slot_id="s4", start_beat=9, duration_beats=3, zone_type="HYBRID_DROP", layout="STROBE_MATRIX",
              cells=[Cell(region=f"m{i}", clip_id=ids[i % len(ids)], start=i * 0.25) for i in range(9)],
              fx=SlotFx(glitch=True, speed_ramp=False)),
+        Slot(slot_id="s5", start_beat=12, duration_beats=2, zone_type="OUTRO", layout="SPLIT_2",
+             layout_params=LayoutParams(split="COLS"),
+             cells=[Cell(region="half0", clip_id=ids[3]), Cell(region="half1", clip_id=ids[4])],
+             fx=SlotFx(push="OUT", dim=True, speed_ramp=False, transition="CROSSFADE")),
     ]
     ws.save(session)
 
